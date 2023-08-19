@@ -1,0 +1,143 @@
+language en_US.UTF-8
+
+syntax on
+set number
+set autoindent
+set smartindent
+
+set showmatch
+set formatoptions+=o
+set nojoinspaces
+set backspace=indent,eol,start
+
+set nostartofline
+
+set hlsearch
+set incsearch
+set ignorecase
+set title
+set titlestring=%t%m\ (%F)
+
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
+
+" Share OS clipboard with nvim's clipboard
+set clipboard=unnamed
+
+set mouse=a
+
+set signcolumn=yes
+" Prefiew replace
+set inccommand=nosplit
+
+set history=10000
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=150
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+	" Recently vim can merge signcolumn and number column into one
+	set signcolumn=number
+else
+	set signcolumn=yes
+endif
+
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.config/nvim/plugged')
+
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'preservim/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-sleuth'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Initialize plugin system
+call plug#end()
+
+colorscheme dracula
+
+autocmd vimenter * hi Normal ctermbg=NONE
+
+map <C-j> <Nop>
+map <C-k> <Nop>
+
+" Terminal mode:
+tnoremap <M-h> <C-\><C-n><C-w>h
+tnoremap <M-j> <C-\><C-n><C-w>j
+tnoremap <M-k> <C-\><C-n><C-w>k
+tnoremap <M-l> <C-\><C-n><C-w>l
+" Insert mode:
+inoremap <M-h> <Esc><C-w>h
+inoremap <M-j> <Esc><C-w>j
+inoremap <M-k> <Esc><C-w>k
+inoremap <M-l> <Esc><C-w>l
+" Visual mode:
+vnoremap <M-h> <Esc><C-w>h
+vnoremap <M-j> <Esc><C-w>j
+vnoremap <M-k> <Esc><C-w>k
+vnoremap <M-l> <Esc><C-w>l
+" Normal mode:
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
+
+
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
+map <C-n> :NERDTreeToggle<CR>
+
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
+
+
+" vim-airline Settings
+let g:rainbow_active=1
+
+let g:airline_theme='dracula'
+let g:airline_powerline_fonts=1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+
+" To using buffer like tab
+nnoremap <C-S-t> :enew<Enter>
+
+nnoremap <F29> :bprevious!<Enter>	" Ctrl + F5
+nnoremap <F30> :bnext!<Enter>		" Ctrl + F6
+nnoremap <F28> :bp <BAR> bd #<Enter>	" Ctrl + F4
+nnoremap <C-F5> :bprevious!<Enter>	" Ctrl + F5
+nnoremap <C-F6> :bnext!<Enter>		" Ctrl + F6
+nnoremap <C-F4> :bp <BAR> bd #<Enter>	" Ctrl + F4
+
+" Screen glitch fix if launched directly
+autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
