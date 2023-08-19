@@ -6,5 +6,9 @@ return {
     "nvim-telescope/telescope.nvim", -- optional
     "sindrets/diffview.nvim",        -- optional
   },
-  config = true
+  config = function ()
+    require("neogit").setup {
+      kind = "split"
+    }
+  end
 }
