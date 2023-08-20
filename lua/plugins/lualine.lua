@@ -5,8 +5,8 @@ return {
   },
   config = function ()
     require('lualine').setup {
-      options = {
-        theme = "vscode"
+      extensions = {
+        "nvim-tree"
       }
     }
   end
