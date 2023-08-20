@@ -6,6 +6,9 @@ return {
     "nvim-telescope/telescope.nvim", -- optional
     "sindrets/diffview.nvim",        -- optional
   },
+  keys = {
+    { "<leader>g", "<cmd>Neogit<cr>", desc = "Neogit" }
+  },
   config = function ()
     require("neogit").setup {
       kind = "split"
