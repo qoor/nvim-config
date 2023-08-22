@@ -59,7 +59,11 @@ return {
   config = function()
     require("nvim-tree").setup {
       hijack_netrw = false,
-      on_attach = my_on_attach
+      on_attach = my_on_attach,
+      filters = {
+        git_ignored = false,
+        custom = { "^.git$" }
+      }
     }
 
     vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
