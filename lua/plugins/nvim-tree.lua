@@ -63,6 +63,10 @@ return {
       filters = {
         git_ignored = false,
         custom = { "^.git$" }
+      },
+      renderer = {
+        highlight_git = true,
+        highlight_opened_files = true
       }
     }
 

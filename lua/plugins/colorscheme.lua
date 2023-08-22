@@ -9,6 +9,13 @@ return {
 
     dracula.setup {
       overrides = {
+        -- NvimTree
+        NvimTreeGitNew = { fg = colors.green },
+        NvimTreeGitDirty = { fg = colors.cyan },
+        NvimTreeGitDeleted = { fg = colors.red },
+        NvimTreeGitMerge = { fg = colors.orange },
+
+        -- lsp
         ['@lsp.type.type'] = { fg = colors.cyan, italic = true },
         ['@lsp.type.typeAlias'] = { link = '@lsp.type.type' },
         ['@lsp.type.struct'] = { link = '@lsp.type.type' },
