@@ -65,8 +65,7 @@ return {
         custom = { "^.git$" }
       },
       renderer = {
-        highlight_git = true,
-        highlight_opened_files = true
+        highlight_git = true
       }
     }
 
