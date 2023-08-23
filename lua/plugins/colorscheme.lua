@@ -36,6 +36,11 @@ return {
 
     dracula.setup {
       overrides = {
+        Include = { fg = colors.pink },
+        Statement = { fg = colors.pink },
+        Define = { fg = colors.pink },
+        PreProc = { fg = colors.pink },
+
         -- Diff
         DiffAdd = { bg = darken(colors.bright_green, 0.15) },
         DiffDelete = { fg = colors.bright_red },
@@ -49,11 +54,14 @@ return {
         NvimTreeGitMerge = { fg = colors.orange },
 
         -- lsp
+        ['@type'] = { fg = colors.cyan, },
         ['@lsp.type.type'] = { fg = colors.cyan, italic = true },
+        ['@type.builtin'] = { fg = colors.pink },
         ['@lsp.type.typeAlias'] = { link = '@lsp.type.type' },
+        ['@lsp.type.class'] = { fg = colors.cyan },
+        ['@lsp.typemod.class.defaultLibrary.cpp'] = { fg = colors.cyan, italic = true },
         ['@lsp.type.struct'] = { link = '@lsp.type.type' },
         ['@lsp.type.enum'] = { link = '@lsp.type.type' },
-        ['@lsp.type.enumMember'] = { fg = colors.fg, italic = true },
         ['@lsp.type.interface'] = { link = '@lsp.type.type' },
 
         ['@field'] = { fg = colors.fg },
@@ -70,23 +78,27 @@ return {
         ['@lsp.type.namespace'] = { link = '@namespace' },
 
         ['@function.macro'] = { fg = colors.green },
-        ['@lsp.type.macro.rust'] = { link = '@function.macro' },
+        ['@lsp.type.macro'] = { link = '@function.macro' },
 
         ['@punctuation.special'] = { fg = colors.fg },
 
         ['@punctuation.delimiter'] = { fg = colors.pink },
 
-        ['@variable.builtin'] = { fg = colors.pink, italic = true },
+        ['@variable.builtin'] = { fg = colors.purple, italic = true },
         ['@lsp.type.variable'] = {},
 
-        ['@lsp.type.selfKeyword'] = { fg = colors.pink, italic = true },
-        ['@lsp.type.selfTypeKeyword'] = { fg = colors.pink, italic = true },
-
         ['@lsp.type.keyword'] = { fg = colors.pink },
+        ['@lsp.type.selfTypeKeyword'] = { fg = colors.purple, italic = true },
 
         ['@lsp.type.typeParameter'] = {},
 
         ['@constant'] = { fg = colors.purple, italic = false },
+
+        ['@string.escape'] = { fg = colors.red },
+
+        ['@label'] = {},
+
+        ['@property'] = {},
       }
     }
 

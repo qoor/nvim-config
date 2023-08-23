@@ -66,6 +66,10 @@ return {
       },
       renderer = {
         highlight_git = true
+      },
+      diagnostics = {
+        enable = true,
+        show_on_dirs = true
       }
     }
 
