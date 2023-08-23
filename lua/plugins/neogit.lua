@@ -7,7 +7,7 @@ return {
     "sindrets/diffview.nvim",        -- optional
   },
   keys = {
-    { "<leader>g", "<cmd>Neogit<cr>", desc = "Neogit" }
+    { "<leader>g", "<cmd>Neogit cwd=%:p:h<cr>", desc = "Neogit" }
   },
   config = function ()
     require("neogit").setup {
