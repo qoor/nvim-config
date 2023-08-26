@@ -36,6 +36,8 @@ return {
 
     dracula.setup {
       overrides = {
+        CursorLineNr = { bold = false },
+
         Include = { fg = colors.pink },
         Statement = { fg = colors.pink },
         Define = { fg = colors.pink },

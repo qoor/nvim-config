@@ -30,3 +30,5 @@ vim.opt.updatetime = 150
 
 -- Don't pass messages to |ins-completion-menu|.
 vim.opt.shortmess:append("c")
+
+vim.opt.cursorline = true
