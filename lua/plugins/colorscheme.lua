@@ -43,7 +43,8 @@ return {
 
         -- Diff
         DiffAdd = { bg = darken(colors.bright_green, 0.15) },
-        DiffDelete = { fg = colors.bright_red },
+        --DiffDelete = { fg = colors.bright_red },
+        DiffDelete = { fg = colors.comment },
         DiffChange = { bg = darken(colors.comment, 0.15) },
         DiffText = { bg = darken(colors.comment, 0.50) },
 
@@ -99,6 +100,11 @@ return {
         ['@label'] = {},
 
         ['@property'] = {},
+
+        DiagnosticUnderlineError = { underline = false, undercurl = true, sp = colors.red },
+        DiagnosticUnderlineWarn = { underline = false, undercurl = true, sp = colors.yellow },
+        DiagnosticUnderlineInfo = { underline = false, undercurl = true, sp = colors.green },
+        DiagnosticUnderlineHint = { underline = false, undercurl = true, sp = colors.cyan },
       }
     }
 
