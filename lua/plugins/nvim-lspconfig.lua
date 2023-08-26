@@ -1,10 +1,12 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
-    "neodev.nvim"
+    "neodev.nvim",
+    "cmp-nvim-lsp"
   },
   config = function ()
     local lspconfig = require("lspconfig")
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
     lspconfig.lua_ls.setup {
       settings = {
@@ -17,12 +19,15 @@ return {
     }
 
     lspconfig.rust_analyzer.setup {
+      capabilities = capabilities,
       settings = {
         ['rust-analyzer'] = {},
       },
     }
 
-    lspconfig.clangd.setup {}
+    lspconfig.clangd.setup {
+      capabilities = capabilities
+    }
 
     -- Use LspAttach autocommand to only map the following keys
     -- after the language server attaches to the current buffer
