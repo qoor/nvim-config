@@ -60,6 +60,7 @@ return {
         ['@type'] = { fg = colors.cyan, },
         ['@lsp.type.type'] = { fg = colors.cyan, italic = true },
         ['@type.builtin'] = { fg = colors.pink },
+        ['@type.builtin.rust'] = { link = "@lsp.type.type" },
         ['@lsp.type.typeAlias'] = { link = '@lsp.type.type' },
         ['@lsp.type.class'] = { fg = colors.cyan },
         ['@lsp.typemod.class.defaultLibrary.cpp'] = { fg = colors.cyan, italic = true },
@@ -97,6 +98,7 @@ return {
 
         ['@constant'] = { fg = colors.purple, italic = false },
 
+        ['@character'] = { link = "@string" },
         ['@string.escape'] = { fg = colors.red },
 
         ['@label'] = {},
