@@ -8,26 +8,36 @@ return {
     local lspconfig = require("lspconfig")
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    lspconfig.lua_ls.setup {
-      settings = {
-        Lua = {
-          completion = {
-            callSnippet = "Replace"
+    local servers = { "lua_ls", "rust_analyzer", "clangd" }
+
+    local settings = {
+      lua_ls = {
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = "Replace"
+            }
           }
+        }
+      },
+      rust_analyzer = {
+        settings = {
+          ["rust-analyzer"] = {}
         }
       }
     }
 
-    lspconfig.rust_analyzer.setup {
-      capabilities = capabilities,
-      settings = {
-        ['rust-analyzer'] = {},
-      },
-    }
+    for _, server in pairs(servers) do
+      Opts = { capabilities = capabilities }
 
-    lspconfig.clangd.setup {
-      capabilities = capabilities
-    }
+      --server = vim.split(server, "@")[1]
+
+      if settings[server] then
+        Opts = vim.tbl_deep_extend("force", settings[server], Opts)
+      end
+
+      lspconfig[server].setup(Opts)
+    end
 
     -- Use LspAttach autocommand to only map the following keys
     -- after the language server attaches to the current buffer
@@ -39,12 +49,47 @@ return {
 
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = ev.buf, })
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = ev.buf, })
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf })
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = ev.buf })
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = ev.buf })
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = ev.buf })
+        local opts = { buffer = ev.buf }
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+
+        local signs = {
+          { name = "DiagnosticSignError", text = "" },
+          { name = "DiagnosticSignWarn", text = "" },
+          { name = "DiagnosticSignHint", text = "" },
+          { name = "DiagnosticSignInfo", text = "" },
+        }
+
+        for _, sign in ipairs(signs) do
+          vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
+        end
+
+        local config = {
+          -- disable virtual text
+          virtual_text = false,
+          -- show signs
+          signs = {
+            active = signs,
+          },
+          update_in_insert = true,
+          underline = true,
+          severity_sort = true,
+          float = {
+            focusable = false,
+            style = "minimal",
+            border = "rounded",
+            source = "always",
+            header = "",
+            prefix = "",
+            suffix = "",
+          },
+        }
+
+        vim.diagnostic.config(config)
 
         local wk = require("which-key")
         wk.register({
