@@ -1,6 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
+    "which-key.nvim",
     "neodev.nvim",
     "cmp-nvim-lsp"
   },
@@ -69,8 +70,8 @@ return {
         end
 
         local config = {
-          -- disable virtual text
-          virtual_text = false,
+          -- enable virtual text
+          virtual_text = true,
           -- show signs
           signs = {
             active = signs,
