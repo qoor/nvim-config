@@ -138,6 +138,11 @@ return {
         CmpItemKindEvent = { fg = "#ee9d28" },
         CmpItemKindOperator = { fg = "#ffffff" },
         CmpItemKindTypeParameter = { fg = "#ffffff" },
+
+        DiffviewFolderSign = { link = "NvimTreeFolderIcon" },
+        diffAdded = { fg = colors.green },
+        diffChanged = { fg = colors.cyan },
+        diffRemoved = { fg = colors.red },
       }
     }
 
