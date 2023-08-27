@@ -41,7 +41,11 @@ return {
         Include = { fg = colors.pink },
         Statement = { fg = colors.pink },
         Define = { fg = colors.pink },
-        PreProc = { fg = colors.pink },
+        PreProc = { fg = colors.green },
+        Keyword = { fg = colors.pink },
+        Special = { fg = colors.red },
+        Operator = { fg = colors.pink },
+        Identifier = { fg = colors.fg },
 
         -- Diff
         DiffAdd = { bg = darken(colors.bright_green, 0.15) },
