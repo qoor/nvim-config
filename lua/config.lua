@@ -18,7 +18,7 @@ vim.opt.titlestring = [[%t%m (%F)]]
 vim.opt.termguicolors = true
 
 -- Share the clipboard between OS and neovim
-vim.opt.clipboard = "unnamed"
+vim.opt.clipboard = "unnamedplus"
 
 vim.opt.mouse = "a"
 
