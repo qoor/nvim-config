@@ -130,5 +130,14 @@ return {
 
       end,
     })
+
+    local formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      pattern = "*.rs",
+      group = formatting_group,
+      callback = function()
+        vim.lsp.buf.format({ async = false })
+      end
+    })
   end
 }
