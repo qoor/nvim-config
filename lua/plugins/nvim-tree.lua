@@ -65,12 +65,24 @@ return {
         custom = { "^.git$" }
       },
       renderer = {
-        highlight_git = true
+        highlight_git = true,
+        indent_markers = {
+          enable = true,
+          icons = {
+            corner = "╵"
+          }
+        },
+        icons = {
+          show = {
+            folder = false
+          },
+          git_placement = "after"
+        }
       },
       diagnostics = {
         enable = true,
         show_on_dirs = true
-      }
+      },
     }
 
     vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
