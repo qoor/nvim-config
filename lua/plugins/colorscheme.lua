@@ -70,7 +70,9 @@ return {
         ['@lsp.typemod.class.defaultLibrary.cpp'] = { fg = colors.cyan, italic = true },
         ['@lsp.type.struct'] = { link = '@lsp.type.type' },
         ['@lsp.type.enum'] = { link = '@lsp.type.type' },
+        ['@lsp.type.enumMember'] = { fg = colors.fg, italic = true },
         ['@lsp.type.interface'] = { link = '@lsp.type.type' },
+        ['@lsp.mod.mutable.rust'] = { underline = true },
 
         ['@field'] = { fg = colors.fg },
         ['@lsp.type.property'] = { link = '@field' },
