@@ -149,6 +149,13 @@ return {
         diffAdded = { fg = colors.green, bold = true },
         diffChanged = { fg = colors.cyan, bold = true },
         diffRemoved = { fg = colors.red, bold = true },
+
+        BracketHighlightForeground1 = { fg = colors.fg },
+        BracketHighlightForeground2 = { fg = colors.pink },
+        BracketHighlightForeground3 = { fg = colors.cyan },
+        BracketHighlightForeground4 = { fg = colors.green },
+        BracketHighlightForeground5 = { fg = colors.purple },
+        BracketHighlightForeground6 = { fg = colors.orange },
       }
     }
 
