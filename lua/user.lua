@@ -19,6 +19,10 @@ if not vim.g.vscode then
   require("lazy").setup("plugins",
   {
     install = { colorscheme = { "dracula" } },
+    checker = {
+      enabled = true,
+      check_pinned = true
+    },
     change_detection = { notify = false }
   })
 end
