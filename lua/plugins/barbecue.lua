@@ -49,7 +49,10 @@ return {
         context_operator = { fg = "#ffffff" },
         context_type_parameter = { fg = "#ffffff" },
       },
-      exclude_filetypes = { "toggleterm" }
+      exclude_filetypes = {
+        "toggleterm",
+        "NeogitCommitMessage"
+      }
     }
   end
 }
