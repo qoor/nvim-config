@@ -98,39 +98,40 @@ return {
 
         local wk = require("which-key")
         wk.register({
-          ["<leader>"] = {
-            l = {
-              name = "+lsp",
+          l = {
+            name = "+lsp",
 
-              a = {
-                name = "+code actions",
+            a = {
+              name = "+code actions",
 
-                a = { vim.lsp.buf.code_action, "code actions" }
-              },
-              g = {
-                name = "+goto",
+              a = { vim.lsp.buf.code_action, "code actions" }
+            },
+            g = {
+              name = "+goto",
 
-                r = { vim.lsp.buf.references, "find references" },
-                t = { vim.lsp.buf.type_definition, "find type definitions" }
-              },
-              r = {
-                name = "+refactor",
+              r = { vim.lsp.buf.references, "find references" },
+              t = { vim.lsp.buf.type_definition, "find type definitions" }
+            },
+            r = {
+              name = "+refactor",
 
-                r = { vim.lsp.buf.rename, "rename" }
-              },
-              w = {
-                name = "+workspaces",
+              r = { vim.lsp.buf.rename, "rename" }
+            },
+            w = {
+              name = "+workspaces",
 
-                l = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "list workspace folders" }
-              },
-              ["="] = {
-                name = "+formatting",
+              l = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "list workspace folders" }
+            },
+            ["="] = {
+              name = "+formatting",
 
-                ["="] = { function () vim.lsp.buf.format { async = true } end, "format buffer" }
-              }
+              ["="] = { function () vim.lsp.buf.format { async = true } end, "format buffer" }
             }
           }
-        }, { buffer = ev.buf })
+        }, {
+          prefix = "<leader>",
+          buffer = ev.buf
+        })
 
       end,
     })
