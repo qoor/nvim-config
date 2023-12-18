@@ -6,6 +6,11 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.number = true
 vim.opt.numberwidth = 6
+
+vim.opt.tabstop = 8
+vim.opt.shiftwidth = 2
+vim.opt.shiftround = true
+vim.opt.expandtab = true
 vim.opt.smartindent = true
 
 vim.opt.showmatch = true
