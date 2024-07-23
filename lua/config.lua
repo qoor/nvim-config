@@ -37,3 +37,5 @@ vim.opt.updatetime = 150
 vim.opt.shortmess:append("c")
 
 vim.opt.cursorline = true
+
+vim.opt.exrc = true

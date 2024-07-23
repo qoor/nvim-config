@@ -9,15 +9,10 @@ return {
     vim.opt.fillchars:append { diff = "╱" }
 
     local wk = require("which-key")
-    wk.register({
-      ["<leader>"] = {
-        d = {
-          name = "+diffview",
-
-          d = { "<cmd>DiffviewOpen<cr>", "enter diffview" },
-          q = { "<cmd>DiffviewClose<cr>", "quit diffview" }
-        }
-      }
+    wk.add({
+      { "<leader>v", group = "+diffview" },
+      { "<leader>vv", "<cmd>DiffviewOpen<cr>", desc = "enter diffview" },
+      { "<leader>vq", "<cmd>DiffviewClose<cr>", desc = "quit diffview" },
     })
 
   end

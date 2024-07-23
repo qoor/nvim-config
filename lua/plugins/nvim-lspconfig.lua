@@ -97,40 +97,25 @@ return {
         vim.diagnostic.config(config)
 
         local wk = require("which-key")
-        wk.register({
-          l = {
-            name = "+lsp",
+        wk.add({
+          buffer = ev.buf,
 
-            a = {
-              name = "+code actions",
-
-              a = { vim.lsp.buf.code_action, "code actions" }
-            },
-            g = {
-              name = "+goto",
-
-              r = { vim.lsp.buf.references, "find references" },
-              t = { vim.lsp.buf.type_definition, "find type definitions" }
-            },
-            r = {
-              name = "+refactor",
-
-              r = { vim.lsp.buf.rename, "rename" }
-            },
-            w = {
-              name = "+workspaces",
-
-              l = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "list workspace folders" }
-            },
-            ["="] = {
-              name = "+formatting",
-
-              ["="] = { function () vim.lsp.buf.format { async = true } end, "format buffer" }
-            }
-          }
-        }, {
-          prefix = "<leader>",
-          buffer = ev.buf
+          { "<leader>l", group = "+lsp" },
+          { "<leader>la", group = "+code actions" },
+          { "<leader>laa", function () vim.lsp.buf.code_action() end, desc = "code actions" },
+          { "<leader>lg", group = "+goto" },
+          { "<leader>lgr", function () vim.lsp.buf.references() end, desc = "find references" },
+          { "<leader>lgt", function () vim.lsp.buf.type_definition() end, desc = "find type definitions" },
+          { "<leader>lr", group = "+refactor" },
+          { "<leader>lrr", function () vim.lsp.buf.rename() end, desc = "rename" },
+          { "<leader>lw", group = "+workspaces" },
+          { "<leader>lwl",
+            function()
+              print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+            end, desc = "list workspace folders" },
+          { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
+          { "<leader>l=", group = "+formatting" },
+          { "<leader>l==", function () vim.lsp.buf.format { async = true } end, desc = "rename" },
         })
 
       end,

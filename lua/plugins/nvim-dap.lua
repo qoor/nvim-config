@@ -2,6 +2,7 @@ return {
   "mfussenegger/nvim-dap",
 
   dependencies = {
+    "nvim-neotest/nvim-nio",
     "rcarriga/nvim-dap-ui",
     "nvim-lua/plenary.nvim",
     "folke/which-key.nvim",
@@ -97,35 +98,31 @@ return {
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('UserDapConfig', {}),
       callback = function (ev)
-        local whichkey = require("which-key")
-        whichkey.register({
-          d = {
-            name = "Debug",
+        local wk = require("which-key")
+        wk.add({
+            buffer = ev.buf,
 
-            R = { function () dap.run_to_cursor() end, "Run to Cursor" },
-            E = { function () dapui.eval(vim.fn.input '[Expression] > ') end, "Evaluate Input" },
-            C = { function () dap.set_breakpoint(vim.fn.input '[Condition] > ') end, "Conditional Breakpoint" },
-            U = { function () dapui.toggle() end, "Toggle UI" },
-            b = { function () dap.step_back() end, "Step Back" },
-            c = { function () dap.continue() end, "Continue" },
-            d = { function () dap.disconnect() end, "Disconnect" },
-            e = { function () dapui.eval() end, "Evaluate" },
-            g = { function () dap.session() end, "Get Session" },
-            h = { function () dap_ui_widgets.hover() end, "Hover Variables" },
-            S = { function () dap_ui_widgets.scopes() end, "Scopes" },
-            i = { function () dap.step_into() end, "Step Into" },
-            o = { function () dap.step_over() end, "Step Over" },
-            p = { function () dap.pause.toggle() end, "Pause" },
-            q = { function () dap.close() end, "Quit" },
-            r = { function () dap.repl.toggle() end, "Toggle Repl" },
-            s = { function () dap.continue() end, "Start" },
-            t = { function () dap.toggle_breakpoint() end, "Toggle Breakpoint" },
-            x = { function () dap.terminate() end, "Terminate" },
-            u = { function () dap.step_out() end, "Step Out" },
-          }
-        }, {
-          prefix = "<leader>",
-          buffer = ev.buf
+          { "<leader>d", group = "+debug" },
+          { "<leader>dR", function () dap.run_to_cursor() end, desc = "Run to Cursor" },
+          { "<leader>dE", function () dapui.eval(vim.fn.input '[Expression] > ') end, desc = "Evaluate Input" },
+          { "<leader>dC", function () dap.set_breakpoint(vim.fn.input '[Condition] > ') end, desc = "Conditional Breakpoint" },
+          { "<leader>dU", function () dapui.toggle() end, desc = "Toggle UI" },
+          { "<leader>db", function () dap.step_back() end, desc = "Step Back" },
+          { "<leader>dc", function () dap.continue() end, desc = "Continue" },
+          { "<leader>dd", function () dap.disconnect() end, desc = "Disconnect" },
+          { "<leader>de", function () dapui.eval() end, desc = "Evaluate" },
+          { "<leader>dg", function () dap.session() end, desc = "Get Session" },
+          { "<leader>dh", function () dap_ui_widgets.hover() end, desc = "Hover Variables" },
+          { "<leader>dS", function () dap_ui_widgets.scopes() end, desc = "Scopes" },
+          { "<leader>di", function () dap.step_into() end, desc = "Step Into" },
+          { "<leader>do", function () dap.step_over() end, desc = "Step Over" },
+          { "<leader>dp", function () dap.pause.toggle() end, desc = "Pause" },
+          { "<leader>dq", function () dap.close() end, desc = "Quit" },
+          { "<leader>dr", function () dap.repl.toggle() end, desc = "Toggle Repl" },
+          { "<leader>ds", function () dap.continue() end, desc = "Start" },
+          { "<leader>dt", function () dap.toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+          { "<leader>dx", function () dap.terminate() end, desc = "Terminate" },
+          { "<leader>du", function () dap.step_out() end, desc = "Step Out" },
         })
       end
     })
