@@ -111,6 +111,9 @@ return {
 
         ['@property'] = {},
 
+        ['@lsp.typemod.variable.defaultLibrary'] = { fg = colors.purple },
+        ['@lsp.typemod.function.defaultLibrary'] = { fg = colors.cyan },
+
         DiagnosticUnderlineError = { underline = false, undercurl = true, sp = colors.red },
         DiagnosticUnderlineWarn = { underline = false, undercurl = true, sp = colors.yellow },
         DiagnosticUnderlineInfo = { underline = false, undercurl = true, sp = colors.green },
