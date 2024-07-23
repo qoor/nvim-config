@@ -5,6 +5,7 @@ return {
     "neodev.nvim",
     "cmp-nvim-lsp",
     "Issafalcon/lsp-overloads.nvim",
+    "MysticalDevil/inlay-hints.nvim",
   },
   config = function ()
     local lspconfig = require("lspconfig")
@@ -120,12 +121,17 @@ return {
         })
 
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client and client.server_capabilities.signatureHelpProvider then
-          require("lsp-overloads").setup(client, {
-            keymaps = {
-              close_signature = "<C-e>",
-            }
-          })
+        if client then
+          if client.supports_method("textDocument/signatureHelp") then
+            require("lsp-overloads").setup(client, {
+              keymaps = {
+                close_signature = "<C-e>",
+              }
+            })
+          end
+          if client.supports_method("textDocument/inlayHint") then
+            require("inlay-hints").on_attach(client, ev.buf)
+          end
         end
 
       end,
