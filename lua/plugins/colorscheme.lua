@@ -105,11 +105,12 @@ return {
         ['@constant'] = { fg = colors.purple, italic = false },
 
         ['@character'] = { link = "@string" },
-        ['@string.escape'] = { fg = colors.red },
+        ['@string.escape'] = { fg = colors.pink },
 
         ['@label'] = {},
 
         ['@property'] = {},
+        ['@property.json'] = { fg = colors.cyan },
 
         ['@lsp.typemod.variable.defaultLibrary'] = { fg = colors.purple },
         ['@lsp.typemod.function.defaultLibrary'] = { fg = colors.cyan },
