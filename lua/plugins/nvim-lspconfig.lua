@@ -3,7 +3,8 @@ return {
   dependencies = {
     "which-key.nvim",
     "neodev.nvim",
-    "cmp-nvim-lsp"
+    "cmp-nvim-lsp",
+    "Issafalcon/lsp-overloads.nvim",
   },
   config = function ()
     local lspconfig = require("lspconfig")
@@ -117,6 +118,15 @@ return {
           { "<leader>l=", group = "+formatting" },
           { "<leader>l==", function () vim.lsp.buf.format { async = true } end, desc = "rename" },
         })
+
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client and client.server_capabilities.signatureHelpProvider then
+          require("lsp-overloads").setup(client, {
+            keymaps = {
+              close_signature = "<C-e>",
+            }
+          })
+        end
 
       end,
     })
