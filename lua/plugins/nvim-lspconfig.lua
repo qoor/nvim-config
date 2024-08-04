@@ -11,7 +11,7 @@ return {
     local lspconfig = require("lspconfig")
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    local servers = { "lua_ls", "rust_analyzer", "clangd" }
+    local servers = { "lua_ls", "rust_analyzer", "clangd", "cmake" }
 
     local settings = {
       lua_ls = {
