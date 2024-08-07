@@ -12,8 +12,9 @@ return {
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
     "onsails/lspkind.nvim",
+    "folke/lazydev.nvim",
   },
-  config = function ()
+  config = function()
     local cmp = require("cmp")
     local luasnip = require("luasnip")
 
@@ -41,7 +42,7 @@ return {
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
-            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
+            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
             -- they way you will only jump inside the snippet region
           elseif luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
@@ -70,6 +71,7 @@ return {
         -- { name = 'snippy' }, -- For snippy users.
       }, {
         { name = 'buffer' },
+        { name = 'lazydev', group_index = 0 }
       }),
 
 
