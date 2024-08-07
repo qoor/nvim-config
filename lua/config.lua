@@ -39,3 +39,5 @@ vim.opt.shortmess:append("c")
 vim.opt.cursorline = true
 
 vim.opt.exrc = true
+
+vim.opt.cino = "N-s"
