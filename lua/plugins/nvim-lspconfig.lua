@@ -2,7 +2,7 @@ return {
   "neovim/nvim-lspconfig",
   dependencies = {
     "which-key.nvim",
-    "neodev.nvim",
+    "lazydev.nvim",
     "cmp-nvim-lsp",
     "Issafalcon/lsp-overloads.nvim",
     "MysticalDevil/inlay-hints.nvim",
