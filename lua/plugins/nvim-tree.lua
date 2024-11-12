@@ -1,20 +1,19 @@
 local function open_nvim_tree(data)
+
+  -- buffer is a [No Name]
+  local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
+
   -- buffer is a directory
   local directory = vim.fn.isdirectory(data.file) == 1
 
-  if not directory then
-
+  if not no_name and not directory then
     return
   end
 
-  -- create a new, empty buffer
-  vim.cmd.enew()
-
-  -- wipe the directory buffer
-  vim.cmd.bw(data.buf)
-
   -- change to the directory
-  vim.cmd.cd(data.file)
+  if directory then
+    vim.cmd.cd(data.file)
+  end
 
   -- open the tree
   require("nvim-tree.api").tree.open()
@@ -35,15 +34,8 @@ local function my_on_attach(bufnr)
   vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
 end
 
--- nvim-tree is also there in modified buffers so this function filter it out
-local function modifiedBufs(bufs)
-    local t = 0
-    for k,v in pairs(bufs) do
-        if v.name:match("NvimTree_") == nil then
-            t = t + 1
-        end
-    end
-    return t
+local function root_label(path)
+  return vim.fs.basename(path)
 end
 
 return {
@@ -60,6 +52,7 @@ return {
     require("nvim-tree").setup {
       hijack_netrw = false,
       on_attach = my_on_attach,
+      sync_root_with_cwd = true,
       filters = {
         git_ignored = false,
         custom = { "^.git$" }
@@ -77,7 +70,9 @@ return {
             folder = false
           },
           git_placement = "after"
-        }
+        },
+        root_folder_label = root_label,
+        group_empty = root_label
       },
       diagnostics = {
         enable = true,
@@ -86,6 +81,7 @@ return {
     }
 
     vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+
     vim.api.nvim_create_autocmd("QuitPre", {
       callback = function()
         local tree_wins = {}
@@ -105,25 +101,6 @@ return {
           for _, w in ipairs(tree_wins) do
             vim.api.nvim_win_close(w, true)
           end
-        end
-      end
-    })
-    vim.api.nvim_create_autocmd("BufEnter", {
-      nested = true,
-      callback = function()
-        local api = require('nvim-tree.api')
-
-        -- Only 1 window with nvim-tree left: we probably closed a file buffer
-        if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
-          -- Required to let the close event complete. An error is thrown without this.
-          vim.defer_fn(function()
-            -- close nvim-tree: will go to the last hidden buffer used before closing
-            api.tree.toggle({find_file = true, focus = true})
-            -- re-open nivm-tree
-            api.tree.toggle({find_file = true, focus = true})
-            -- nvim-tree is still the active window. Go to the previous window.
-            vim.cmd("wincmd p")
-          end, 0)
         end
       end
     })
