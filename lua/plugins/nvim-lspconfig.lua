@@ -62,9 +62,9 @@ return {
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'gd', builtin.lsp_definitions, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+        vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
 
@@ -111,7 +111,7 @@ return {
           { "<leader>laa", function() vim.lsp.buf.code_action() end,     desc = "code actions" },
           { "<leader>lg",  group = "+goto" },
           { "<leader>lgr", function() builtin.lsp_references() end,      desc = "find references" },
-          { "<leader>lgt", function() vim.lsp.buf.type_definition() end, desc = "find type definitions" },
+          { "<leader>lgt", function() builtin.lsp_type_definitions() end, desc = "find type definitions" },
           { "<leader>lr",  group = "+refactor" },
           { "<leader>lrr", function() vim.lsp.buf.rename() end,          desc = "rename" },
           { "<leader>lw",  group = "+workspaces" },
