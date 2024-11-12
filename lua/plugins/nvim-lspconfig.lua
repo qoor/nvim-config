@@ -108,13 +108,15 @@ return {
 
           { "<leader>l",   group = "+lsp" },
           { "<leader>la",  group = "+code actions" },
-          { "<leader>laa", function() vim.lsp.buf.code_action() end,     desc = "code actions" },
+          { "<leader>laa", function() vim.lsp.buf.code_action() end, desc = "code actions" },
           { "<leader>lg",  group = "+goto" },
-          { "<leader>lgr", function() builtin.lsp_references() end,      desc = "find references" },
+          { "<leader>lga", function() builtin.lsp_dynamic_workspace_symbols() end, desc = "find all meaningful symbols" },
+          { "<leader>lgr", function() builtin.lsp_references() end, desc = "find references" },
           { "<leader>lgt", function() builtin.lsp_type_definitions() end, desc = "find type definitions" },
           { "<leader>lr",  group = "+refactor" },
-          { "<leader>lrr", function() vim.lsp.buf.rename() end,          desc = "rename" },
+          { "<leader>lrr", function() vim.lsp.buf.rename() end, desc = "rename" },
           { "<leader>lw",  group = "+workspaces" },
+          { "<leader>lwd", "<cmd>LspInfo<cr>", desc = "describe current language server" },
           {
             "<leader>lwl",
             function()
@@ -122,7 +124,9 @@ return {
             end,
             desc = "list workspace folders"
           },
-          { "<leader>lwr", "<cmd>LspRestart<cr>",                                                     desc = "restart language server" },
+          { "<leader>lwq", "<cmd>LspStop<cr>", desc = "stop language server" },
+          { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
+          { "<leader>lws", "<cmd>LspStart<cr>", desc = "start language server" },
           { "<leader>l=",  group = "+formatting" },
           { "<leader>l==", function() require("conform").format { bufnr = ev.buf, async = true } end, desc = "format" },
         })
