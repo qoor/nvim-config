@@ -7,6 +7,7 @@ return {
     "conform.nvim",
     "Issafalcon/lsp-overloads.nvim",
     "MysticalDevil/inlay-hints.nvim",
+    "nvim-telescope/telescope.nvim"
   },
   config = function()
     local lspconfig = require("lspconfig")
@@ -52,6 +53,8 @@ return {
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('UserLspConfig', {}),
       callback = function(ev)
+        local builtin = require("telescope.builtin")
+
         -- Enable completion triggered by <c-x><c-o>
         vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
@@ -63,7 +66,7 @@ return {
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
 
         local signs = {
           { name = "DiagnosticSignError", text = "" },
@@ -107,7 +110,7 @@ return {
           { "<leader>la",  group = "+code actions" },
           { "<leader>laa", function() vim.lsp.buf.code_action() end,     desc = "code actions" },
           { "<leader>lg",  group = "+goto" },
-          { "<leader>lgr", function() vim.lsp.buf.references() end,      desc = "find references" },
+          { "<leader>lgr", function() builtin.lsp_references() end,      desc = "find references" },
           { "<leader>lgt", function() vim.lsp.buf.type_definition() end, desc = "find type definitions" },
           { "<leader>lr",  group = "+refactor" },
           { "<leader>lrr", function() vim.lsp.buf.rename() end,          desc = "rename" },
