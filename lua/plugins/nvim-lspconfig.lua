@@ -4,10 +4,11 @@ return {
     "which-key.nvim",
     "lazydev.nvim",
     "cmp-nvim-lsp",
+    "conform.nvim",
     "Issafalcon/lsp-overloads.nvim",
     "MysticalDevil/inlay-hints.nvim",
   },
-  config = function ()
+  config = function()
     local lspconfig = require("lspconfig")
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -102,22 +103,25 @@ return {
         wk.add({
           buffer = ev.buf,
 
-          { "<leader>l", group = "+lsp" },
-          { "<leader>la", group = "+code actions" },
-          { "<leader>laa", function () vim.lsp.buf.code_action() end, desc = "code actions" },
-          { "<leader>lg", group = "+goto" },
-          { "<leader>lgr", function () vim.lsp.buf.references() end, desc = "find references" },
-          { "<leader>lgt", function () vim.lsp.buf.type_definition() end, desc = "find type definitions" },
-          { "<leader>lr", group = "+refactor" },
-          { "<leader>lrr", function () vim.lsp.buf.rename() end, desc = "rename" },
-          { "<leader>lw", group = "+workspaces" },
-          { "<leader>lwl",
+          { "<leader>l",   group = "+lsp" },
+          { "<leader>la",  group = "+code actions" },
+          { "<leader>laa", function() vim.lsp.buf.code_action() end,     desc = "code actions" },
+          { "<leader>lg",  group = "+goto" },
+          { "<leader>lgr", function() vim.lsp.buf.references() end,      desc = "find references" },
+          { "<leader>lgt", function() vim.lsp.buf.type_definition() end, desc = "find type definitions" },
+          { "<leader>lr",  group = "+refactor" },
+          { "<leader>lrr", function() vim.lsp.buf.rename() end,          desc = "rename" },
+          { "<leader>lw",  group = "+workspaces" },
+          {
+            "<leader>lwl",
             function()
               print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            end, desc = "list workspace folders" },
-          { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
-          { "<leader>l=", group = "+formatting" },
-          { "<leader>l==", function () vim.lsp.buf.format { async = true } end, desc = "rename" },
+            end,
+            desc = "list workspace folders"
+          },
+          { "<leader>lwr", "<cmd>LspRestart<cr>",                                                     desc = "restart language server" },
+          { "<leader>l=",  group = "+formatting" },
+          { "<leader>l==", function() require("conform").format { bufnr = ev.buf, async = true } end, desc = "format" },
         })
 
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
@@ -133,7 +137,6 @@ return {
             require("inlay-hints").on_attach(client, ev.buf)
           end
         end
-
       end,
     })
 

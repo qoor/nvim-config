@@ -30,8 +30,9 @@ return {
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
-        local disable_filetypes = { c = true, cpp = true }
-        return { timeout_ms = 500, lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype] }
+        -- local disable_filetypes = { c = true, cpp = true }
+        -- return { timeout_ms = 500, lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype] }
+        return { timeout_ms = 500, lsp_fallback = false }
       end,
 
       formatters = {
@@ -45,6 +46,8 @@ return {
   end,
 
   init = function()
+    vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
     vim.api.nvim_create_user_command("FormatDisable", function(args)
       if args.bang then
         -- FormatDisable! will disable formatting just for this buffer
