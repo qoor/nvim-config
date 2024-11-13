@@ -3,15 +3,22 @@ local function open_nvim_tree(data)
   local directory = vim.fn.isdirectory(data.file) == 1
 
   if not directory then
-
     return
   end
 
-  -- create a new, empty buffer
-  vim.cmd.enew()
+  -- delete directory buffer and set buffer on the main window
+  local wins = vim.api.nvim_list_wins()
+  for _, w in ipairs(wins) do
+    if vim.api.nvim_win_get_config(w).relative == '' then
+      local buf = vim.api.nvim_win_get_buf(w)
 
-  -- wipe the directory buffer
-  vim.cmd.bw(data.buf)
+      -- create a new, empty buffer
+      local new_buf = vim.api.nvim_create_buf(true, false)
+
+      vim.api.nvim_win_set_buf(w, new_buf)
+      pcall(vim.api.nvim_buf_delete, buf, { force = true })
+    end
+  end
 
   -- change to the directory
   vim.cmd.cd(data.file)
