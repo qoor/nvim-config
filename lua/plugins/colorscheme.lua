@@ -37,6 +37,12 @@ return {
     dracula.setup {
       overrides = {
         CursorLineNr = { bold = false },
+        CursorLine = { bg = darken(colors.black, 0.5), },
+        ColorColumn = { bg = colors.selection, },
+
+        IlluminatedWordText = { bg = colors.selection },
+        IlluminatedWordRead = { bg = colors.selection },
+        IlluminatedWordWrite = { bg = colors.selection },
 
         Include = { fg = colors.pink },
         Statement = { fg = colors.pink },
