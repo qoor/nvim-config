@@ -77,6 +77,12 @@ return {
           show = {
             folder = false
           },
+          glyphs = {
+            folder = {
+              arrow_closed = "",
+              arrow_open = "",
+            }
+          },
           git_placement = "after"
         },
         root_folder_label = root_label,

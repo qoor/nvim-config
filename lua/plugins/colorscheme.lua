@@ -61,6 +61,8 @@ return {
         DiffText = { bg = darken(colors.comment, 0.50) },
 
         -- NvimTree
+        NvimTreeFolderArrowOpen = { fg = colors.fg },
+        NvimTreeFolderArrowClosed = { fg = colors.fg },
         NvimTreeGitNew = { fg = colors.green },
         NvimTreeGitDirty = { fg = colors.cyan },
         NvimTreeGitDeleted = { fg = colors.red },
