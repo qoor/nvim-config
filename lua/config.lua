@@ -29,6 +29,8 @@ vim.opt.mouse = "a"
 
 vim.opt.cmdheight = 2
 
+vim.opt.signcolumn = "yes"
+
 -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 -- delays and poor user experience.
 vim.opt.updatetime = 150
