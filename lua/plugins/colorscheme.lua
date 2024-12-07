@@ -52,6 +52,7 @@ return {
         Special = { fg = colors.red },
         Operator = { fg = colors.pink },
         Identifier = { fg = colors.fg },
+        Exception = { fg = colors.pink, },
 
         -- Diff
         DiffAdd = { bg = darken(colors.bright_green, 0.15) },
@@ -122,6 +123,8 @@ return {
 
         ['@lsp.typemod.variable.defaultLibrary'] = { fg = colors.purple },
         ['@lsp.typemod.function.defaultLibrary'] = { fg = colors.cyan },
+
+        ['@keyword.exception'] = { fg = colors.pink },
 
         DiagnosticUnderlineError = { underline = false, undercurl = true, sp = colors.red },
         DiagnosticUnderlineWarn = { underline = false, undercurl = true, sp = colors.yellow },
