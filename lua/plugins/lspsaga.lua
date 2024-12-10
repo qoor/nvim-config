@@ -10,10 +10,11 @@ return {
         sign = true
       },
       rename = {
+        in_select = false,
         keys = {
-          quit = "q"
+          quit = "<C-c>"
         }
-      },
+      }
     })
 
     vim.api.nvim_create_autocmd('LspAttach', {
