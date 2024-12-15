@@ -1,5 +1,8 @@
 return {
   "folke/which-key.nvim",
+  dependencies = {
+    "famiu/bufdelete.nvim"
+  },
   event = "VeryLazy",
   init = function()
     vim.o.timeout = true
@@ -20,7 +23,7 @@ return {
       { "<leader>bh", "<cmd>bp<cr>", { silent = true }, desc = "move to the previous buffer" },
       { "<leader>bl", "<cmd>bn<cr>", { silent = true }, desc = "move to the next buffer" },
       { "<leader>b`", "<cmd>b#<cr>", { silent = true }, desc = "move to the next buffer" },
-      { "<leader>bd", "<cmd>bp <bar> bd #<cr>", { silent = true }, desc = "delete buffer" },
+      { "<leader>bd", "<cmd>Bdelete<cr>", { silent = true }, desc = "delete buffer" },
     })
   end
 }
