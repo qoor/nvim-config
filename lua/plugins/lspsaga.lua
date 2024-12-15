@@ -14,6 +14,9 @@ return {
         keys = {
           quit = "<C-c>"
         }
+      },
+      symbol_in_winbar = {
+        enable = false
       }
     })
 
