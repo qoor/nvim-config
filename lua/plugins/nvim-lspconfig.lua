@@ -128,7 +128,7 @@ return {
           { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
           { "<leader>lws", "<cmd>LspStart<cr>", desc = "start language server" },
           { "<leader>l=",  group = "+formatting" },
-          { "<leader>l==", function() require("conform").format { bufnr = ev.buf, async = true } end, desc = "format" },
+          { "<leader>l==", function() require("conform").format { lsp_fallback = true, async = false, timeout_ms = 500 } end, desc = "format", mode = { "n", "v" } },
         })
 
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
