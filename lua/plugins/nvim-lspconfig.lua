@@ -68,16 +68,16 @@ return {
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
 
-        local signs = {
-          { name = "DiagnosticSignError", text = "" },
-          { name = "DiagnosticSignWarn", text = "" },
-          { name = "DiagnosticSignHint", text = "" },
-          { name = "DiagnosticSignInfo", text = "" },
-        }
-
-        for _, sign in ipairs(signs) do
-          vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-        end
+        vim.diagnostic.config({
+          signs = {
+            text = {
+              [vim.diagnostic.serverity.ERROR] = "",
+              [vim.diagnostic.serverity.WARN] = "",
+              [vim.diagnostic.serverity.HINT] = "",
+              [vim.diagnostic.serverity.INFO] = "",
+            },
+          }
+        })
 
         local config = {
           -- enable virtual text
