@@ -71,10 +71,10 @@ return {
         vim.diagnostic.config({
           signs = {
             text = {
-              [vim.diagnostic.serverity.ERROR] = "",
-              [vim.diagnostic.serverity.WARN] = "",
-              [vim.diagnostic.serverity.HINT] = "",
-              [vim.diagnostic.serverity.INFO] = "",
+              [vim.diagnostic.severity.ERROR] = "",
+              [vim.diagnostic.severity.WARN] = "",
+              [vim.diagnostic.severity.HINT] = "",
+              [vim.diagnostic.severity.INFO] = "",
             },
           }
         })
