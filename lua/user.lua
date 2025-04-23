@@ -38,9 +38,4 @@ else
   vim.opt.clipboard = "unnamedplus"
   
   vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true })
-
-  vim.api.nvim_create_autocmd({ "InsertLeave" }, {
-    pattern = "*",
-    command = [[lua require('vscode-neovim').call('editor.action.trimTrailingWhitespace')]],
-  })
 end
