@@ -25,6 +25,8 @@ if not vim.g.vscode then
     change_detection = { notify = false }
   })
 else
+  vim.opt.smartindent = true
+
   vim.opt.cino = "N-s,g0"
 
   vim.opt.ignorecase = true
@@ -36,6 +38,15 @@ else
 
   -- Share the clipboard between OS and neovim
   vim.opt.clipboard = "unnamedplus"
-  
+
   vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true })
+
+  -- Indent fix when insert line after
+  vim.keymap.set('n', 'o', function()
+    require('vscode').action('editor.action.insertLineAfter', {
+      callback = function()
+        vim.cmd.startinsert({ bang = true })
+      end,
+    })
+  end)
 end
