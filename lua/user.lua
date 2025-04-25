@@ -25,17 +25,9 @@ if not vim.g.vscode then
     change_detection = { notify = false }
   })
 else
-  vim.opt.cino = "N-s,g0"
-
   vim.opt.ignorecase = true
   vim.opt.smartcase = true
 
-  -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-  -- delays and poor user experience.
-  vim.opt.updatetime = 150
-
   -- Share the clipboard between OS and neovim
   vim.opt.clipboard = "unnamedplus"
-
-  vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true })
 end
