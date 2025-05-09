@@ -44,3 +44,6 @@ vim.opt.updatetime = 150
 
 -- Share the clipboard between OS and neovim
 vim.opt.clipboard = "unnamedplus"
+if vim.env.SSH_TTY then
+    vim.g.clipboard = "osc52"
+end
