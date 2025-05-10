@@ -171,6 +171,38 @@ return {
         BracketHighlightForeground4 = { fg = colors.green },
         BracketHighlightForeground5 = { fg = colors.purple },
         BracketHighlightForeground6 = { fg = colors.orange },
+
+        -- dropbar.nvim
+        DropBarIconKindFile = { fg = "#ffffff" },
+        DropBarIconKindModule = { fg = "#ffffff" },
+        DropBarIconKindPackage = { fg = "#ffffff" },
+        DropBarIconKindClass = { fg = "#ee9d28" },
+        DropBarIconKindMethod = { fg = "#b180d7" },
+        DropBarIconKindProperty = { fg = "#ffffff" },
+        DropBarIconKindField = { fg = "#75beff" },
+        DropBarIconKindConstructor = { fg = "#b180d7" },
+        DropBarIconKindEnum = { fg = "#ee9d28" },
+        DropBarIconKindInterface = { fg = "#75beff" },
+        DropBarIconKindFunction = { fg = "#b180d7" },
+        DropBarIconKindVariable = { fg = "#75beff" },
+        DropBarIconKindConstant = { fg = "#ffffff" },
+        DropBarIconKindString = { fg = "#ffffff" },
+        DropBarIconKindNumber = { fg = "#ffffff" },
+        DropBarIconKindBoolean = { fg = "#ffffff" },
+        DropBarIconKindArray = { fg = "#ffffff" },
+        DropBarIconKindObject = { fg = "#ffffff" },
+        DropBarIconKindKey = { fg = "#ffffff" },
+        DropBarIconKindEnumMember = { fg = "#75beff" },
+        DropBarIconKindStruct = { fg = "#ac8fe4" },
+        DropBarIconKindEvent = { fg = "#ee9d28" },
+        DropBarIconKindOperator = { fg = "#ffffff" },
+        DropBarIconKindTypeParameter = { fg = "#ffffff" },
+        --context_null = { fg = "#ac8fe4" },
+        --context_namespace = { fg = "#ac8fe4" },
+
+        -- nvim-treesitter-context
+        TreesitterContextBottom = { underline = true, sp = "Grey" },
+        TreesitterContextLineNumberBottom = { underline = true, sp = "Grey" },
       }
     }
 
