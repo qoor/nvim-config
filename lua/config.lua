@@ -47,3 +47,6 @@ vim.opt.clipboard = "unnamedplus"
 if vim.env.SSH_TTY then
     vim.g.clipboard = "osc52"
 end
+
+-- Detect Korean encoding
+vim.o.fileencodings = "ucs-bom,utf-8,cp949,default,latin9"
