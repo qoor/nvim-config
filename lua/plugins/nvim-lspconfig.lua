@@ -5,7 +5,7 @@ return {
     "lazydev.nvim",
     "cmp-nvim-lsp",
     "conform.nvim",
-    "Issafalcon/lsp-overloads.nvim",
+    --"Issafalcon/lsp-overloads.nvim",
     "MysticalDevil/inlay-hints.nvim",
     "nvim-telescope/telescope.nvim"
   },
@@ -63,7 +63,7 @@ return {
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         vim.keymap.set('n', 'gd', builtin.lsp_definitions, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        --vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
         vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
@@ -132,13 +132,6 @@ return {
 
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
         if client then
-          if client.supports_method("textDocument/signatureHelp") then
-            require("lsp-overloads").setup(client, {
-              keymaps = {
-                close_signature = "<C-e>",
-              }
-            })
-          end
           if client.supports_method("textDocument/inlayHint") then
             require("inlay-hints").on_attach(client, ev.buf)
           end
