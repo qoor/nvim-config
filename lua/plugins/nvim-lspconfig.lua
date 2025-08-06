@@ -10,7 +10,6 @@ return {
     "nvim-telescope/telescope.nvim"
   },
   config = function()
-    local lspconfig = require("lspconfig")
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
     local servers = { "lua_ls", "rust_analyzer", "clangd", "cmake" }
@@ -45,8 +44,37 @@ return {
         Opts = vim.tbl_deep_extend("force", settings[server], Opts)
       end
 
-      lspconfig[server].setup(Opts)
+      vim.lsp.config(server, Opts)
+      vim.lsp.enable(server)
     end
+
+    local diagnostic_config = {
+      -- enable virtual text
+      virtual_text = true,
+      -- show signs
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = "",
+          [vim.diagnostic.severity.WARN] = "",
+          [vim.diagnostic.severity.HINT] = "",
+          [vim.diagnostic.severity.INFO] = "",
+        },
+      },
+      update_in_insert = true,
+      underline = true,
+      severity_sort = true,
+      float = {
+        focusable = false,
+        style = "minimal",
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+        suffix = "",
+      },
+    }
+
+    vim.diagnostic.config(diagnostic_config)
 
     -- Use LspAttach autocommand to only map the following keys
     -- after the language server attaches to the current buffer
@@ -67,39 +95,6 @@ return {
         vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
-
-        vim.diagnostic.config({
-          signs = {
-          }
-        })
-
-        local config = {
-          -- enable virtual text
-          virtual_text = true,
-          -- show signs
-          signs = {
-            text = {
-              [vim.diagnostic.severity.ERROR] = "",
-              [vim.diagnostic.severity.WARN] = "",
-              [vim.diagnostic.severity.HINT] = "",
-              [vim.diagnostic.severity.INFO] = "",
-            },
-          },
-          update_in_insert = true,
-          underline = true,
-          severity_sort = true,
-          float = {
-            focusable = false,
-            style = "minimal",
-            border = "rounded",
-            source = "always",
-            header = "",
-            prefix = "",
-            suffix = "",
-          },
-        }
-
-        vim.diagnostic.config(config)
 
         local wk = require("which-key")
         wk.add({
@@ -132,7 +127,7 @@ return {
 
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
         if client then
-          if client.supports_method("textDocument/inlayHint") then
+          if client:supports_method("textDocument/inlayHint") then
             require("inlay-hints").on_attach(client, ev.buf)
           end
         end
