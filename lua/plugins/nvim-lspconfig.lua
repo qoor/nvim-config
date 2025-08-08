@@ -45,7 +45,6 @@ return {
       end
 
       vim.lsp.config(server, Opts)
-      vim.lsp.enable(server)
     end
 
     local diagnostic_config = {
