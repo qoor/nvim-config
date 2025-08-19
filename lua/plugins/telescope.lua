@@ -1,12 +1,18 @@
 return {
   "nvim-telescope/telescope.nvim",
-  branch = "0.1.x",
+
   dependencies = {
     "nvim-lua/plenary.nvim",
     "folke/which-key.nvim",
   },
 
   config = function ()
+    require("telescope").setup({
+      defaults = {
+        path_display = { "filename_first" },
+      },
+    })
+
     local wk = require("which-key")
     wk.add({
       { "<leader>f", group = "+file" },
