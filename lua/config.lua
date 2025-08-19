@@ -42,11 +42,20 @@ vim.opt.smartcase = true
 -- delays and poor user experience.
 vim.opt.updatetime = 150
 
--- Share the clipboard between OS and neovim
-vim.opt.clipboard = "unnamedplus"
-if vim.env.SSH_TTY then
+-- Sync clipboard between OS and Neovim.
+--  Schedule the setting after `UiEnter` because it can increase startup-time.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.schedule(function()
+  if vim.env.SSH_TTY then
     vim.g.clipboard = "osc52"
-end
+  else
+    vim.opt.clipboard = "unnamedplus"
+  end
+end)
 
 -- Detect Korean encoding
 vim.o.fileencodings = "ucs-bom,utf-8,cp949,default,latin9"
+
+-- Save undo history
+vim.o.undofile = true
