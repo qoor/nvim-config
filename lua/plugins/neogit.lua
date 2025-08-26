@@ -9,9 +9,13 @@ return {
   keys = {
     { "<leader>g", "<cmd>Neogit cwd=%:p:h<cr>", desc = "Neogit" }
   },
-  config = function ()
-    require("neogit").setup {
-      kind = "split"
-    }
-  end
+  opts = {
+    graph_style = "unicode",
+    kind = "split",
+
+    integrations = {
+      telescope = true,
+      diffview = true,
+    },
+  }
 }
