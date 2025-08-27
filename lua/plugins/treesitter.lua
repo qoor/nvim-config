@@ -6,6 +6,7 @@ return {
 
   config = function ()
     local ensure_installed = { "vimdoc", "luadoc", "vim", "lua", "markdown", "json", "c", "cpp", "rust", "python" }
+    require('nvim-treesitter').install(ensure_installed)
 
     local start_ts = function(lang)
       if not vim.tbl_contains(require('nvim-treesitter.config').get_available(), lang) then return end
