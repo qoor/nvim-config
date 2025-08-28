@@ -16,9 +16,10 @@ return {
             vim.lsp.protocol.make_client_capabilities(),
             require('cmp_nvim_lsp').default_capabilities())
 
-    local servers = { "lua_ls", "rust_analyzer", "clangd", "cmake" }
+    local servers = {
+      clangd = {},
+      cmake = {},
 
-    local settings = {
       lua_ls = {
         settings = {
           Lua = {
@@ -39,16 +40,9 @@ return {
       }
     }
 
-    for _, server in pairs(servers) do
-      Opts = { capabilities = capabilities }
-
-      --server = vim.split(server, "@")[1]
-
-      if settings[server] then
-        Opts = vim.tbl_deep_extend("force", settings[server], Opts)
-      end
-
-      vim.lsp.config(server, Opts)
+    for server, opts in pairs(servers) do
+      opts.capabilities = capabilities
+      vim.lsp.config(server, opts)
       vim.lsp.enable(server)
     end
 
