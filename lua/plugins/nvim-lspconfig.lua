@@ -49,9 +49,8 @@ return {
       end
 
       vim.lsp.config(server, Opts)
+      vim.lsp.enable(server)
     end
-
-    vim.lsp.enable("lua_ls")
 
     local diagnostic_config = {
       -- enable virtual text
