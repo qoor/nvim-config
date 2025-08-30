@@ -23,8 +23,8 @@ return {
       options = {
         offsets = {
           {
-            filetype = "NvimTree",
-            text = " ",
+            filetype = "neo-tree",
+            text = "EXPLORER",
             highlight = " ",
             separator = true
           }
