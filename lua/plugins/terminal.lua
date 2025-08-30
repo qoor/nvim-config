@@ -16,7 +16,7 @@ return {
         return vim.o.columns * 0.4
       end
     end,
-    on_open = function (terminal)
+    on_open = function(terminal)
       local nvimtree = require("nvim-tree.api")
       local nvimtree_view = require("nvim-tree.view")
 
@@ -28,7 +28,7 @@ return {
       end
 
       vim.defer_fn(function()
-          vim.wo[terminal.window].winbar = ""
+        vim.wo[terminal.window].winbar = ""
       end, 0)
     end
   },
