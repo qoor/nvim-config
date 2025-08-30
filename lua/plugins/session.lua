@@ -8,8 +8,7 @@ return {
   config = function(_, opts)
     require("persistence").setup(opts)
 
-    local wk = require("which-key")
-    wk.add({
+    require("which-key").add({
       { "<leader>q", group = "+session" },
       -- load the session for the current directory
       { "<leader>qq", function () require("persistence").load() end, desc = "load session" },

@@ -7,8 +7,7 @@ return {
     cmd = { "Trouble" },
     opts = {}, -- for default options, refer to the configuration section for custom setup.
     init = function()
-      local wk = require("which-key")
-      wk.add({
+      require("which-key").add({
         { "<leader>x", group = "+problem" },
         { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "show problems" },
         { "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "show current buffer problems" },
@@ -144,8 +143,7 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('UserDapConfig', {}),
         callback = function (ev)
-          local wk = require("which-key")
-          wk.add({
+          require("which-key").add({
               buffer = ev.buf,
 
             { "<leader>d", group = "+debug" },

@@ -30,36 +30,27 @@ return {
         border = "single"   -- double, rounded, single, shadow, none, or a table of borders
       },
     },
-    -- or use config
-    -- config = function(_, opts) require'lsp_signature'.setup({you options}) end
   },
 
   {
     "nvimdev/lspsaga.nvim",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
-
-    config = function()
-      require("lspsaga").setup({
-        lightbulb = {
-          sign = true
-        },
-        rename = {
-          in_select = false,
-          keys = {
-            quit = "<C-c>"
-          }
-        },
-        symbol_in_winbar = {
-          enable = false
+    dependencies = { "neovim/nvim-lspconfig", },
+    opts = {
+      lightbulb = { sign = true },
+      rename = {
+        in_select = false,
+        keys = {
+          quit = "<C-c>"
         }
-      })
+      },
+      symbol_in_winbar = { enable = false }
+    },
+    config = function(_, opts)
+      require("lspsaga").setup(opts)
 
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(ev)
-          local wk = require("which-key")
-          wk.add({
+          require("which-key").add({
             buffer = ev.buf,
 
             { "<leader>laa", "<cmd>:Lspsaga code_action<cr>", desc = "code actions" },
@@ -173,51 +164,47 @@ return {
           vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
           vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
 
-          local wk = require("which-key")
-          wk.add({
+          require("which-key").add({
             buffer = ev.buf,
 
             { "<leader>l",   group = "+lsp" },
+
             { "<leader>la",  group = "+code actions" },
             { "<leader>laa", function() vim.lsp.buf.code_action() end, desc = "code actions" },
+
             { "<leader>lg",  group = "+goto" },
             { "<leader>lga", function() builtin.lsp_dynamic_workspace_symbols() end, desc = "find all meaningful symbols" },
             { "<leader>lgr", function() builtin.lsp_references() end, desc = "find references" },
             { "<leader>lgt", function() builtin.lsp_type_definitions() end, desc = "find type definitions" },
+
             { "<leader>lr",  group = "+refactor" },
             { "<leader>lrr", function() vim.lsp.buf.rename() end, desc = "rename" },
+
             { "<leader>lw",  group = "+workspaces" },
             { "<leader>lwd", "<cmd>LspInfo<cr>", desc = "describe current language server" },
-            {
-              "<leader>lwl",
-              function()
-                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-              end,
-              desc = "list workspace folders"
-            },
+            { "<leader>lwl",
+              function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc = "list workspace folders" },
             { "<leader>lwq", "<cmd>LspStop<cr>", desc = "stop language server" },
             { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
             { "<leader>lws", "<cmd>LspStart<cr>", desc = "start language server" },
+
             { "<leader>l=",  group = "+formatting" },
-            { "<leader>l==", function() require("conform").format { lsp_fallback = true, async = false, timeout_ms = 500 } end, desc = "format", mode = { "n", "v" } },
+            { "<leader>l==",
+              function() require("conform").format { lsp_fallback = true, async = false, timeout_ms = 500 } end,
+              desc = "format", mode = { "n", "v" } },
           })
 
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          if client then
-            if client:supports_method("textDocument/inlayHint") then
-              require("inlay-hints").on_attach(client, ev.buf)
-            end
+          if client and client:supports_method("textDocument/inlayHint") then
+            require("inlay-hints").on_attach(client, ev.buf)
           end
         end,
       })
 
-      local formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*.rs",
-        group = formatting_group,
-        callback = function()
-          vim.lsp.buf.format({ async = false })
-        end
+        group = vim.api.nvim_create_augroup("LspFormatting", {}),
+        callback = function() vim.lsp.buf.format({ async = false }) end
       })
     end
   }

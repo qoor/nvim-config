@@ -3,10 +3,8 @@ return {
     "famiu/bufdelete.nvim",
     dependencies = { "folke/which-key.nvim" },
     cmd = "Bdelete",
-
     config = function()
-      local wk = require("which-key")
-      wk.add({
+      require("which-key").add({
         { "<leader>b", group = "+buffer" },
         { "<leader>bh", "<cmd>bp<cr>", { silent = true }, desc = "move to the previous buffer" },
         { "<leader>bl", "<cmd>bn<cr>", { silent = true }, desc = "move to the next buffer" },
@@ -38,9 +36,7 @@ return {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    config = function ()
-      require("nvim-autopairs").setup {}
-    end
+    opts = {}
   },
 
   {
@@ -50,8 +46,6 @@ return {
     cmd = { "ConformInfo" },
 
     config = function()
-      local util = require("conform.util")
-
       require("conform").setup({
         formatters_by_ft = {
           c = { "clang-format" },
@@ -82,11 +76,10 @@ return {
 
         formatters = {
           ["clang-format"] = {
-            cwd = util.root_file({ ".editorconfig", ".clang-format" }),
+            cwd = require("conform.util").root_file({ ".editorconfig", ".clang-format" }),
             require_cwd = true
           }
         }
-
       })
     end,
 

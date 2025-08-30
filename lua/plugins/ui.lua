@@ -59,13 +59,9 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-    },
+    dependencies = { "nvim-tree/nvim-web-devicons", },
     opts = {
-      extensions = {
-        "nvim-tree"
-      }
+      extensions = { "nvim-tree" }
     }
   },
 
@@ -85,9 +81,7 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = {
-      indent = {
-        char = "▏"
-      }
+      indent = { char = "▏" }
     }
   },
 
@@ -121,15 +115,16 @@ return {
       "folke/which-key.nvim",
     },
 
-    config = function ()
-      require("telescope").setup({
-        defaults = {
-          path_display = { "filename_first" },
-        },
-      })
+    opts = {
+      defaults = {
+        path_display = { "filename_first" },
+      },
+    },
 
-      local wk = require("which-key")
-      wk.add({
+    config = function(_, opts)
+      require("telescope").setup(opts)
+
+      require("which-key").add({
         { "<leader>f", group = "+file" },
         { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "find files" },
         { "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "live grep" },
@@ -314,7 +309,7 @@ return {
         snippet = {
           expand = function(args)
             -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            luasnip.lsp_expand(args.body) -- For `luasnip` users.
             -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
             -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
           end,

@@ -21,7 +21,7 @@ return {
       local nvimtree_view = require("nvim-tree.view")
 
       if nvimtree_view.is_visible() and terminal.direction == "horizontal" then
-        local nvimtree_width = vim.fn.winwidth(nvimtree_view.get_winnr())
+        local nvimtree_width = vim.fn.winwidth(math.floor(nvimtree_view.get_winnr()))
         nvimtree.tree.toggle()
         nvimtree_view.View.width = nvimtree_width
         nvimtree.tree.toggle({find_file = false, focus = false})
