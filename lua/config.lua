@@ -41,7 +41,7 @@ vim.opt.smartcase = true
 
 -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 -- delays and poor user experience.
-vim.opt.updatetime = 150
+vim.opt.updatetime = 50
 
 if vim.env.SSH_TTY then
   vim.g.clipboard = "osc52"
