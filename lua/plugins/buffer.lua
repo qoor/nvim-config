@@ -3,7 +3,7 @@ return {
     "famiu/bufdelete.nvim",
     dependencies = { "folke/which-key.nvim" },
     cmd = "Bdelete",
-    config = function()
+    init = function()
       require("which-key").add({
         { "<leader>b", group = "+buffer" },
         { "<leader>bh", "<cmd>bp<cr>", { silent = true }, desc = "move to the previous buffer" },
