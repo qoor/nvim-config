@@ -24,6 +24,7 @@ vim.opt.mouse = "a"
 
 vim.opt.cmdheight = 2
 
+vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 
 -- Don't pass messages to |ins-completion-menu|.
