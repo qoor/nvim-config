@@ -56,7 +56,7 @@ return {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", },
     opts = {
-      extensions = { "nvim-tree" }
+      extensions = { "neo-tree", "toggleterm", "nvim-dap-ui", "trouble" }
     }
   },
 
@@ -130,137 +130,93 @@ return {
   },
 
   {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
-    lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons", },
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    lazy = false, -- neo-tree will lazily load itself
     keys = {
-      { "<leader>t", "<cmd>NvimTreeToggle<cr>", desc = "NvimTree" }
+      { "<leader>t", "<cmd>Neotree toggle<cr>", desc = "Neo-tree" }
     },
+    ---@module 'neo-tree'
+    ---@type neotree.Config
     opts = {
-      hijack_netrw = false,
-      on_attach = function(bufnr)
-        local api = require("nvim-tree.api")
-
-        local function opts(desc)
-          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-        end
-
-        -- default mappings
-        api.config.mappings.default_on_attach(bufnr)
-
-        -- custom mappings
-        vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
-        vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
-
-      end,
-      sync_root_with_cwd = true,
-      filters = {
-        git_ignored = false,
-        custom = { "^.git$" }
-      },
-      renderer = {
-        highlight_git = true,
-        indent_markers = {
-          enable = true,
-          icons = {
-            corner = "╵"
-          }
+      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+      open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
+      default_component_configs = {
+        indent = {
+          indent_marker = "│",
+          -- last_indent_marker = "└",
+          last_indent_marker = "",
+          with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
+          expander_collapsed = "",
+          expander_expanded = "",
         },
-        icons = {
-          show = {
-            folder = false
-          },
-          glyphs = {
-            folder = {
-              arrow_closed = "",
-              arrow_open = "",
-            }
-          },
-          git_placement = "after"
-        },
-        root_folder_label = vim.fs.basename,
-        group_empty = vim.fs.basename,
+        icon = {
+          folder_closed = "",
+          folder_open = "",
+          folder_empty = "",
+          folder_empty_open = "",
+          provider = function(icon, node, state) -- default icon provider utilizes nvim-web-devicons if available
+            if node.type == "file" or node.type == "terminal" then
+              local success, web_devicons = pcall(require, "nvim-web-devicons")
+              local name = node.type == "terminal" and "terminal" or node.name
+              if success then
+                local devicon, hl = web_devicons.get_icon(name)
+                icon.text = devicon or icon.text
+                icon.highlight = hl or icon.highlight
+              end
+            end
+          end,
+          default = "*",
+        }
       },
-      diagnostics = {
-        enable = true,
-        show_on_dirs = true
-      },
+      window = {
+        position = "left",
+        width = 30,
+      }
     },
-    config = function(_, opts)
-      require("nvim-tree").setup(opts)
-
-      vim.api.nvim_create_autocmd("VimEnter", {
-        callback = function(data)
-          -- buffer is a directory
-          local directory = vim.fn.isdirectory(data.file) == 1
-
-          if not directory then
-            return
-          end
-
-          -- delete directory buffer and set buffer on the main window
-          local wins = vim.api.nvim_list_wins()
-          for _, w in ipairs(wins) do
-            if vim.api.nvim_win_get_config(w).relative == '' then
-              local buf = vim.api.nvim_win_get_buf(w)
-
-              -- create a new, empty buffer
-              local new_buf = vim.api.nvim_create_buf(true, false)
-
-              vim.api.nvim_win_set_buf(w, new_buf)
-              pcall(vim.api.nvim_buf_delete, buf, { force = true })
-            end
-          end
-
-          -- change to the directory
-          vim.cmd.cd(data.file)
-
-          -- open the tree
-          require("nvim-tree.api").tree.open()
-        end
-      })
-
-      vim.api.nvim_create_autocmd("QuitPre", {
-        callback = function()
-          local tree_wins = {}
-          local floating_wins = {}
-          local wins = vim.api.nvim_list_wins()
-          for _, w in ipairs(wins) do
-            local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
-            if bufname:match("NvimTree_") ~= nil then
-              table.insert(tree_wins, w)
-            end
-            if vim.api.nvim_win_get_config(w).relative ~= '' then
-              table.insert(floating_wins, w)
-            end
-          end
-          if 1 == #wins - #floating_wins - #tree_wins then
-            -- Should quit, so we close all invalid windows.
-            for _, w in ipairs(tree_wins) do
-              vim.api.nvim_win_close(w, true)
-            end
-          end
-        end
-      })
-      vim.api.nvim_create_autocmd("BufEnter", {
-        nested = true,
-        callback = function()
-          local api = require('nvim-tree.api')
-
-          -- Only 1 window with nvim-tree left: we probably closed a file buffer
-          if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
-            -- Required to let the close event complete. An error is thrown without this.
-            vim.defer_fn(function()
-              -- close nvim-tree: will go to the last hidden buffer used before closing
-              api.tree.toggle({find_file = true, focus = true})
-              -- re-open nivm-tree
-              api.tree.toggle({find_file = true, focus = true})
-              -- nvim-tree is still the active window. Go to the previous window.
-              vim.cmd("wincmd p")
-            end, 0)
-          end
-        end
+    filesystem = {
+      filtered_items = {
+        hide_dotfiles = false,
+        hide_gitignored = false,
+      },
+      follow_current_file = {
+        enabled = false, -- This will find and focus the file in the active buffer every time
+        --               -- the current file is changed while the tree is open.
+      }
+    },
+    group_empty_dirs = true, -- when true, empty folders will be grouped together
+  },
+  {
+    "antosha417/nvim-lsp-file-operations",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-neo-tree/neo-tree.nvim", -- makes sure that this loads after Neo-tree.
+    },
+    config = function()
+      require("lsp-file-operations").setup()
+    end,
+  },
+  {
+    "s1n7ax/nvim-window-picker",
+    version = "2.*",
+    config = function()
+      require("window-picker").setup({
+        filter_rules = {
+          include_current_win = false,
+          autoselect_one = true,
+          -- filter using buffer options
+          bo = {
+            -- if the file type is one of following, the window will be ignored
+            filetype = { "neo-tree", "neo-tree-popup", "notify" },
+            -- if the buffer type is one of following, the window will be ignored
+            buftype = { "terminal", "quickfix" },
+          },
+        },
       })
     end,
   },

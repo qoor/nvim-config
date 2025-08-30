@@ -69,6 +69,13 @@ return {
         NvimTreeGitDeleted = { fg = colors.red },
         NvimTreeGitMerge = { fg = colors.orange },
 
+        -- Neo-tree
+        NeoTreeDirectoryIcon = { fg = colors.fg },
+        NeoTreeGitAdded = { fg = colors.green },
+        NeoTreeGitModified = { fg = colors.cyan },
+        NeoTreeGitDeleted = { fg = colors.red },
+        NeoTreeGitConflict = { fg = colors.orange },
+
         -- lsp
         ['@type'] = { fg = colors.cyan, },
         ['@lsp.type.type'] = { fg = colors.cyan, italic = true },
