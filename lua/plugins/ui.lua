@@ -1,11 +1,6 @@
 return {
   {
     "folke/which-key.nvim",
-
-    dependencies = {
-      "famiu/bufdelete.nvim"
-    },
-
     event = "VeryLazy",
 
     init = function()
