@@ -177,6 +177,9 @@ return {
       window = {
         position = "left",
         width = 30,
+        mappings = {
+          ["<cr>"] = "open_with_window_picker",
+        }
       },
       filesystem = {
         filtered_items = {
