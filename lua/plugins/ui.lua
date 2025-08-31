@@ -177,20 +177,23 @@ return {
       window = {
         position = "left",
         width = 30,
-      }
-    },
-    filesystem = {
-      use_libuv_file_watcher = true,
-      filtered_items = {
-        hide_dotfiles = false,
-        hide_gitignored = false,
       },
-      follow_current_file = {
-        enabled = false, -- This will find and focus the file in the active buffer every time
-        --               -- the current file is changed while the tree is open.
-      }
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          never_show = {
+            ".git"
+          }
+        },
+        follow_current_file = {
+          enabled = false, -- This will find and focus the file in the active buffer every time
+          --               -- the current file is changed while the tree is open.
+        },
+        group_empty_dirs = true, -- when true, empty folders will be grouped together
+        use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
+      },
     },
-    group_empty_dirs = true, -- when true, empty folders will be grouped together
   },
   {
     "antosha417/nvim-lsp-file-operations",
