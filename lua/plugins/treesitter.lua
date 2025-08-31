@@ -19,6 +19,7 @@ return {
 
     local start_ts = function(lang)
       if not vim.tbl_contains(require('nvim-treesitter.config').get_available(), lang) then return end
+      vim.wo.foldmethod = 'expr'
       vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
       --vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       vim.treesitter.start()

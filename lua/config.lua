@@ -5,7 +5,6 @@ vim.g.loaded_netrwPlugin = 1
 --vim.cmd("language en_US")
 
 vim.opt.number = true
-vim.opt.numberwidth = 6
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -60,3 +59,10 @@ vim.o.fileencodings = "ucs-bom,utf-8,cp949,default,latin9"
 
 -- Save undo history
 vim.o.undofile = true
+
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:,diff:╱]]
+vim.o.foldcolumn = '1'
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.o.foldminlines = 1

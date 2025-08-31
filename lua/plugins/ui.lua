@@ -130,6 +130,66 @@ return {
   },
 
   {
+    "kevinhwang91/nvim-ufo",
+    dependencies = {
+      "kevinhwang91/promise-async",
+      "nvim-treesitter/nvim-treesitter",
+      "neovim/nvim-lspconfig",
+    },
+    opts = {},
+    config = function(_, opts)
+      require("ufo").setup(opts)
+
+      vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+      vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+      vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
+      vim.keymap.set("n", "zm", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "nvcheatsheet", "neo-tree", "NeogitStatus" },
+        callback = function()
+          require("ufo").detach()
+          vim.opt_local.foldenable = false
+          vim.opt_local.foldcolumn = '0'
+        end
+      })
+    end
+  },
+
+  {
+    "luukvbaal/statuscol.nvim",
+    config = function()
+      local builtin = require("statuscol.builtin")
+      require("statuscol").setup({
+        setopt = true,
+        ft_ignore = { "neo-tree", "neotree", "NeogitStatus" },
+        -- override the default list of segments with:
+        -- number-less fold indicator, then signs, then line number & separator
+        segments = {
+          {
+            sign = { namespace = { "diagnostic" }, maxwidth = 1 },
+            click = "v:lua.ScSa"
+          },
+          {
+            text = { builtin.lnumfunc },
+            condition = { true, builtin.not_empty },
+            click = "v:lua.ScLa",
+          },
+          {
+            sign = { namespace = { "gitsign" }, maxwidth = 1, colwidth = 1 },
+            click = "v:lua.ScSa"
+          },
+          { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
+          {
+            sign = { name = { ".*" }, maxwidth = 1, colwidth = 1, auto = true },
+            click = "v:lua.ScSa"
+          },
+        },
+      })
+    end,
+  },
+
+  {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     dependencies = {

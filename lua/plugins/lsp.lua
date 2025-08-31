@@ -36,7 +36,7 @@ return {
     "nvimdev/lspsaga.nvim",
     dependencies = { "neovim/nvim-lspconfig", },
     opts = {
-      lightbulb = { sign = true },
+      lightbulb = { sign = false, virtual_text = true, sign_priority = 60 },
       rename = {
         in_select = false,
         keys = {
@@ -81,10 +81,17 @@ return {
     },
     config = function()
       local capabilities = vim.tbl_deep_extend(
-              "force",
-              {},
-              vim.lsp.protocol.make_client_capabilities(),
-              require('cmp_nvim_lsp').default_capabilities())
+        "force",
+        {
+          textDocument = {
+            foldingRange = {
+              dynamicRegistration = false,
+              lineFoldingOnly = true
+            }
+          }
+        },
+        vim.lsp.protocol.make_client_capabilities(),
+        require('cmp_nvim_lsp').default_capabilities())
 
       local servers = {
         clangd = {},
@@ -118,7 +125,7 @@ return {
 
       local diagnostic_config = {
         -- enable virtual text
-        virtual_text = true,
+        virtual_text = { prefix = "" },
         -- show signs
         signs = {
           text = {

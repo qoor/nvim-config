@@ -5,8 +5,6 @@ return {
     command = "DiffviewOpen",
     dependencies = { "which-key.nvim" },
     init = function()
-      vim.opt.fillchars:append { diff = "╱" }
-
       require("which-key").add({
         { "<leader>v", group = "+diffview" },
         { "<leader>vv", "<cmd>DiffviewOpen<cr>", desc = "enter diffview" },
