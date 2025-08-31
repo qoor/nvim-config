@@ -208,6 +208,7 @@ return {
       open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
       default_component_configs = {
         indent = {
+          indent_size = 1,
           indent_marker = "│",
           -- last_indent_marker = "└",
           last_indent_marker = "",
