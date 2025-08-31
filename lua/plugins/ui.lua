@@ -185,8 +185,10 @@ return {
         filtered_items = {
           visible = true,
           hide_dotfiles = false,
+          show_hidden_count = false,
           never_show = {
-            ".git"
+            ".git",
+            ".DS_Store"
           }
         },
         follow_current_file = {
