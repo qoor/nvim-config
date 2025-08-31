@@ -177,7 +177,7 @@ return {
       },
       window = {
         position = "left",
-        width = 30,
+        width = 35,
         mappings = {
           ["<cr>"] = "open_with_window_picker",
         }
