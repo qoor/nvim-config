@@ -76,6 +76,8 @@ return {
         NeoTreeGitDeleted = { fg = colors.red },
         NeoTreeGitConflict = { fg = colors.orange },
 
+        GitBlameVirtualText = { fg = darken(colors.white, 0.35), bg = darken(colors.black, 0.5) },
+
         -- lsp
         ['@type'] = { fg = colors.cyan, },
         ['@lsp.type.type'] = { fg = colors.cyan, italic = true },
