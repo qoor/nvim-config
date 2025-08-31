@@ -172,7 +172,8 @@ return {
             end
           end,
           default = "*",
-        }
+        },
+        symlink_target = { enabled = true }
       },
       window = {
         position = "left",
