@@ -40,6 +40,8 @@ return {
         CursorLine = { bg = darken(colors.black, 0.5), },
         ColorColumn = { bg = colors.selection, },
 
+        SpellBad = { underline = false, undercurl = true, sp = colors.red },
+
         IlluminatedWordText = { bg = colors.selection },
         IlluminatedWordRead = { bg = colors.selection },
         IlluminatedWordWrite = { bg = colors.selection },
