@@ -136,6 +136,13 @@ return {
 
         ['@keyword.exception'] = { fg = colors.pink },
 
+        -- Markdown
+        ['@markup.raw'] = { link = 'Text' },
+        ['@markup.raw.markdown_inline'] = { fg = colors.fg, bg = colors.black },
+        ['@markup.heading.1.markdown'] = { bold = true },
+        ['@markup.heading.2.markdown'] = { bold = true },
+        ['@markup.heading.3.markdown'] = { bold = true },
+
         DiagnosticUnderlineError = { underline = false, undercurl = true, sp = colors.red },
         DiagnosticUnderlineWarn = { underline = false, undercurl = true, sp = colors.yellow },
         DiagnosticUnderlineInfo = { underline = false, undercurl = true, sp = colors.green },
