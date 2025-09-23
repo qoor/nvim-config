@@ -140,7 +140,7 @@ return {
 
         -- Markdown
         ['@markup.raw'] = { link = 'Text' },
-        ['@markup.raw.markdown_inline'] = { fg = colors.fg, bg = colors.black },
+        ['@markup.raw.markdown_inline'] = { fg = colors.green },
         ['@markup.heading.1.markdown'] = { fg = colors.purple, bold = true },
         ['@markup.heading.2.markdown'] = { fg = colors.purple, bold = true },
         ['@markup.heading.3.markdown'] = { fg = colors.purple, bold = true },
