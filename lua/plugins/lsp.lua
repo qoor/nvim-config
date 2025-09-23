@@ -86,7 +86,9 @@ return {
         require('cmp_nvim_lsp').default_capabilities())
 
       local servers = {
-        clangd = {},
+        clangd = {
+          cmd = { "clangd", "--background-index", "--completion-style=detailed", "--clang-tidy" }
+        },
         cmake = {},
 
         lua_ls = {
