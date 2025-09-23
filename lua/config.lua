@@ -68,3 +68,11 @@ vim.o.foldenable = true
 vim.o.foldminlines = 1
 
 vim.o.wrap = false
+
+-- Enable spell when opening Markdown file
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.md", "*.markdown" },
+  callback = function()
+    vim.opt_local.spell = true
+  end,
+})
