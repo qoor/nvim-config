@@ -25,6 +25,7 @@ return {
     event = "InsertEnter",
     opts = {
       bind = true,
+      hint_enable = false,
       max_height = 64,
       handler_opts = {
         border = "single"   -- double, rounded, single, shadow, none, or a table of borders
