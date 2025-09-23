@@ -101,6 +101,7 @@ return {
         ['@parameter'] = { fg = colors.orange, italic = true },
         ['@parameter.reference'] = { link = '@parameter' },
         ['@lsp.type.parameter'] = { link = '@parameter' },
+        ['@variable.parameter'] = { link = '@parameter' },
 
         ['@namespace'] = { fg = colors.fg },
         ['@lsp.type.namespace'] = { link = '@namespace' },

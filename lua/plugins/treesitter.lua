@@ -14,7 +14,7 @@ return {
   build = ":TSUpdate",
 
   config = function ()
-    local ensure_installed = { "vimdoc", "luadoc", "vim", "lua", "markdown", "json", "c", "cpp", "rust", "python" }
+    local ensure_installed = { "vimdoc", "luadoc", "vim", "lua", "markdown", "markdown_inline", "json", "c", "cpp", "doxygen", "rust", "python" }
     require('nvim-treesitter').install(ensure_installed)
 
     local start_ts = function(lang)
