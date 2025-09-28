@@ -92,6 +92,8 @@ return {
         },
         cmake = {},
 
+        gopls = {},
+
         lua_ls = {
           settings = {
             Lua = {
