@@ -30,4 +30,6 @@ else
 
   -- Share the clipboard between OS and neovim
   vim.opt.clipboard = "unnamedplus"
+
+  require("keymap")
 end

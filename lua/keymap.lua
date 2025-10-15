@@ -16,9 +16,14 @@ vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 
 vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set("n", "<C-h>", "<CMD>bp<CR>", { silent = true })
-vim.keymap.set("n", "<C-l>", "<CMD>bn<CR>", { silent = true })
-vim.keymap.set("n", "<C-`>", "<CMD>b#<CR>", { silent = true })
-vim.keymap.set("n", "<esc>", "<CMD>:nohl<CR>", { silent = true, noremap = true })
+if not vim.g.vscode then
+  vim.keymap.set("n", "<C-h>", "<CMD>bp<CR>", { silent = true })
+  vim.keymap.set("n", "<C-l>", "<CMD>bn<CR>", { silent = true })
+  vim.keymap.set("n", "<C-`>", "<CMD>b#<CR>", { silent = true })
+  vim.keymap.set("n", "<esc>", "<CMD>:nohl<CR>", { silent = true, noremap = true })
+else
+  vim.keymap.set("n", "<C-k>", "<CMD>Tabprevious<CR>", { silent = true })
+  vim.keymap.set("n", "<C-j>", "<CMD>Tabnext<CR>", { silent = true })
+end
 
 --vim.keymap.set("n", "<C-d>", "<CMD>b# <BAR> bd #<CR>", { silent = true })
