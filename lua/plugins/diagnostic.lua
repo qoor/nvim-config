@@ -140,6 +140,8 @@ return {
         dapui.close()
       end
 
+      vim.fn.sign_define("DapBreakpoint", { text = "•", texthl = "DapBreakpoint", linehl = "", numhl = "" })
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('UserDapConfig', {}),
         callback = function (ev)

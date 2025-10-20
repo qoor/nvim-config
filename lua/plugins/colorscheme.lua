@@ -222,6 +222,8 @@ return {
         -- nvim-treesitter-context
         TreesitterContextBottom = { underline = true, sp = "Grey" },
         TreesitterContextLineNumberBottom = { underline = true, sp = "Grey" },
+
+        DapBreakpoint = { fg = "#dc1400" }
       }
     }
 
