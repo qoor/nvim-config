@@ -171,6 +171,10 @@ return {
             click = "v:lua.ScSa"
           },
           {
+            sign = { name = { "DapBreakpoint.*" }, maxwidth = 1, auto = true },
+            click = "v:lua.ScLa"
+          },
+          {
             text = { builtin.lnumfunc },
             condition = { true, builtin.not_empty },
             click = "v:lua.ScLa",
