@@ -72,6 +72,7 @@ return {
         NvimTreeGitMerge = { fg = colors.orange },
 
         -- Neo-tree
+        NeoTreeCursorLine = { bg = colors.selection },
         NeoTreeDirectoryIcon = { fg = colors.fg },
         NeoTreeGitAdded = { fg = colors.green },
         NeoTreeGitModified = { fg = colors.cyan },
