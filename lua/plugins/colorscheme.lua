@@ -224,7 +224,27 @@ return {
         TreesitterContextBottom = { underline = true, sp = "Grey" },
         TreesitterContextLineNumberBottom = { underline = true, sp = "Grey" },
 
-        DapBreakpoint = { fg = "#dc1400" }
+        DapBreakpoint = { fg = "#dc1400" },
+
+        -- Neogit
+        -- NeogitDiffAdd = { fg = colors.bright_green, bg = colors.menu },
+        -- NeogitDiffDelete = { fg = colors.bright_red, bg = colors.menu },
+        -- NeogitDiffContext = { fg = colors.comment, bg = colors.visual },
+        -- NeogitDiffAddHighlight = { fg = colors.green, bg = colors.bg },
+        -- NeogitDiffDeleteHighlight = { fg = colors.red, bg = colors.bg },
+        -- NeogitDiffContextHighlight = { fg = colors.comment, bg = colors.visual },
+        -- NeogitDiffAddCursor = { fg = colors.green, bg = colors.selection },
+        -- NeogitDiffDeleteCursor = { fg = colors.red, bg = colors.selection },
+        -- NeogitDiffContextCursor = { fg = colors.comment, bg = colors.selection },
+        NeogitDiffAdd = {},
+        NeogitDiffDelete = {},
+        NeogitDiffContext = {},
+        NeogitDiffAddHighlight = {},
+        NeogitDiffDeleteHighlight = {},
+        NeogitDiffContextHighlight = {},
+        NeogitDiffAddCursor = {},
+        NeogitDiffDeleteCursor = {},
+        NeogitDiffContextCursor = { link = "CursorLine" },
       }
     }
 
