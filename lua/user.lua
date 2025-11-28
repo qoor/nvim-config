@@ -1,4 +1,3 @@
-if not vim.g.vscode then
   -- Bootstrap lazy.nvim
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -16,12 +15,23 @@ if not vim.g.vscode then
   end
   vim.opt.rtp:prepend(lazypath)
 
-  require("config")
-  require("keymap")
+if not vim.g.vscode then
+  require("nvim.config")
+  require("shared.config")
+  require("nvim.keymap")
+  require("shared.keymap")
 
+else
+  require("code.config")
+  require("shared.config")
+  require("shared.keymap")
+end
+
+if not vim.g.vscode then
   require("lazy").setup({
     spec = {
-      { import = "plugins" }
+      { import = "nvim.plugins" },
+      { import = "shared.plugins" }
     },
     install = { colorscheme = { "dracula" } },
     checker = {
@@ -31,11 +41,10 @@ if not vim.g.vscode then
     change_detection = { notify = false }
   })
 else
-  vim.opt.ignorecase = true
-  vim.opt.smartcase = true
-
-  -- Share the clipboard between OS and neovim
-  vim.opt.clipboard = "unnamedplus"
-
-  require("keymap")
+  require("lazy").setup({
+    spec = {
+      { import = "code.plugins" },
+      { import = "shared.plugins" }
+    },
+  })
 end
