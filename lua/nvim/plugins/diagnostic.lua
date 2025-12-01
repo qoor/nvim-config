@@ -1,3 +1,209 @@
+--- Return running processes as a list with { pid, name } tables.
+---
+--- Takes an optional `opts` table with the following options:
+---
+--- - filter string|fun: A lua pattern or function to filter the processes.
+---                      If a function the parameter is a table with
+---                      {pid: integer, name: string}
+---                      and it must return a boolean.
+---                      Matches are included.
+---
+--- <pre>
+--- require("dap.utils").pick_process({ filter = "sway" })
+--- </pre>
+---
+--- <pre>
+--- require("dap.utils").pick_process({
+---   filter = function(proc) return vim.endswith(proc.name, "sway") end
+--- })
+--- </pre>
+---
+---@param opts? {filter: string|(fun(proc: dap.utils.Proc): boolean)}
+---
+---@return dap.utils.Proc[]
+local function get_processes(prefix, opts)
+  opts = opts or {}
+  local is_windows = vim.fn.has('win32') == 1
+  local separator = is_windows and ',' or ' \\+'
+  local user
+  if prefix then
+    user = vim.fn.trim(vim.fn.system({'id', '-un'}))
+  else
+    user = os.getenv("USER")
+  end
+  local command = is_windows and {'tasklist', '/nh', '/fo', 'csv'} or {'ps', 'ah', '-U', user}
+
+  local full_command
+  if prefix then
+    full_command = prefix
+    table.insert(full_command, table.concat(command, " "))
+  else
+    full_command = command
+  end
+
+  -- output format for `tasklist /nh /fo` csv
+  --    '"smss.exe","600","Services","0","1,036 K"'
+  -- output format for `ps ah`
+  --    " 107021 pts/4    Ss     0:00 /bin/zsh <args>"
+  local get_pid = function (parts)
+    if is_windows then
+      return vim.fn.trim(parts[2], '"')
+    else
+      return parts[1]
+    end
+  end
+
+  local get_process_name = function (parts)
+    if is_windows then
+      return vim.fn.trim(parts[1], '"')
+    else
+      return table.concat({unpack(parts, 5)}, ' ')
+    end
+  end
+
+  local output = vim.fn.system(full_command)
+  local lines = vim.split(output, '\n')
+  local procs = {}
+
+  local nvim_pid = vim.fn.getpid()
+  for _, line in pairs(lines) do
+    if line ~= "" then -- tasklist command outputs additional empty line in the end
+      local parts = vim.fn.split(vim.fn.trim(line), separator)
+      local pid, name = get_pid(parts), get_process_name(parts)
+      pid = tonumber(pid)
+      if pid and pid ~= nvim_pid then
+        table.insert(procs, { pid = pid, name = name })
+      end
+    end
+  end
+
+  if opts.filter then
+    local filter
+    if type(opts.filter) == "string" then
+      filter = function(proc)
+        return proc.name:find(opts.filter)
+      end
+    elseif type(opts.filter) == "function" then
+      filter = function(proc)
+        return opts.filter(proc)
+      end
+    else
+      error("opts.filter must be a string or a function")
+    end
+    procs = vim.tbl_filter(filter, procs)
+  end
+
+  return procs
+end
+
+local function pick_remote_process(config)
+  local prefix = {unpack(config.pipeTransport.pipeArgs)}
+  table.insert(prefix, 1, config.pipeTransport.pipeProgram)
+
+  local label_fn = function(proc)
+    return string.format("id=%d name=%s", proc.pid, proc.name)
+  end
+
+  local co = coroutine.running()
+  if co then
+    return coroutine.create(function()
+      local procs = get_processes(prefix)
+      require('dap.ui').pick_one(procs, "Select remote process", label_fn, function(choice)
+        coroutine.resume(co, choice and choice.pid or nil)
+      end)
+    end)
+  else
+    local procs = get_processes(prefix)
+    local result = require('dap.ui').pick_one_sync(procs, "Select remote process", label_fn)
+    return result and result.pid or nil
+   end
+end
+
+local function telescope_pick_process(config)
+  return coroutine.create(function(coro)
+    ----------------------------------------------------------------
+    -- 1) prefix 결정 (config.pipeTransport 기반)
+    ----------------------------------------------------------------
+    local prefix = nil
+
+    if config.pipeTransport and config.pipeTransport.pipeProgram
+    then
+      local pt = config.pipeTransport
+      if type(pt.pipeArgs) == "table" then
+        prefix = { unpack(pt.pipeArgs) }
+      else
+        prefix = {}
+      end
+      -- 예: { "ssh", "user@vm-host", ... }
+      table.insert(prefix, 1, pt.pipeProgram)
+    end
+
+    ----------------------------------------------------------------
+    -- 2) 프로세스 목록 취득 (필터 없음)
+    ----------------------------------------------------------------
+    local ok, procs = pcall(get_processes, prefix, {})
+    if not ok then
+      vim.notify("get_processes failed: " .. tostring(procs), vim.log.levels.ERROR)
+      coroutine.resume(coro, nil)
+      return
+    end
+
+    if #procs == 0 then
+      vim.notify("no processes found", vim.log.levels.WARN)
+      coroutine.resume(coro, nil)
+      return
+    end
+
+    ----------------------------------------------------------------
+    -- 3) Telescope picker
+    ----------------------------------------------------------------
+    local pickers      = require("telescope.pickers")
+    local finders      = require("telescope.finders")
+    local conf         = require("telescope.config").values
+    local actions      = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
+
+    local entries = {}
+    for _, p in ipairs(procs) do
+      table.insert(entries, {
+        pid  = p.pid,
+        name = p.name,
+        line = string.format("id=%d    name=%s", p.pid, p.name),
+      })
+    end
+
+    local t_opts = {}
+
+    pickers.new(t_opts, {
+      prompt_title = "Pick process"
+        .. (prefix and " (remote)" or " (local)"),
+      finder = finders.new_table {
+        results = entries,
+        entry_maker = function(e)
+          return {
+            value   = e,
+            display = e.line,
+            ordinal = e.line,
+          }
+        end,
+      },
+      sorter = conf.generic_sorter(t_opts),
+      attach_mappings = function(bufnr, _)
+        actions.select_default:replace(function()
+          actions.close(bufnr)
+          local selection = action_state.get_selected_entry()
+          if not selection or not selection.value then
+            coroutine.resume(coro, nil)
+            return
+          end
+          coroutine.resume(coro, selection.value.pid)
+        end)
+        return true
+      end,
+    }):find()
+  end)
+end
+
 return {
   {
     "folke/trouble.nvim",
@@ -138,6 +344,16 @@ return {
       end
       dap.listeners.before.event_exited.dapui_config = function ()
         dapui.close()
+      end
+
+      dap.listeners.on_config["user"] = function(config)
+        if type(config.processId) == "string" and config.processId:match("pickRemoteProcess") then
+          config.processId = function()
+            -- return pick_remote_process(config)
+            return telescope_pick_process(config)
+          end
+        end
+        return config
       end
 
       vim.fn.sign_define("DapBreakpoint", { text = "•", texthl = "DapBreakpoint", linehl = "", numhl = "" })
