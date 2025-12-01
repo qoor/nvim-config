@@ -1,0 +1,25 @@
+#!/bin/bash
+
+subcmd=""
+for arg in "$@"; do
+  case "$arg" in
+    -*) # args (ex: --a, -b)
+      continue
+      ;;
+    *) # subcmd
+      subcmd="$arg"
+      break
+      ;;
+  esac
+done
+
+if [ "$subcmd" != "show" ]; then
+  exec git $@
+fi
+
+output="$(git "$@")"
+if printf "%s" "$output" | iconv -f utf-8 -t utf-8 >/dev/null 2>&1; then
+  printf "%s" "$output" | iconv -f utf-8 -t euc-kr
+else
+  printf "%s" "$output"
+fi

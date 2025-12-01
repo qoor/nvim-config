@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+import os
+import sys
+import subprocess
+
+# 실제 git 바이너리 경로 (네 환경에 맞게 수정)
+REAL_GIT = "/usr/bin/git"
+
+try:
+    import chardet
+except ImportError:
+    chardet = None  # chardet 없으면 변환 안 하고 원본 그대로 내보냄
+
+
+def looks_binary(data: bytes) -> bool:
+    # NUL 바이트가 있으면 바이너리로 간주
+    return b"\x00" in data
+
+
+def is_valid_utf8(data: bytes) -> bool:
+    try:
+        data.decode("utf-8")
+        return True
+    except UnicodeDecodeError:
+        return False
+
+
+def detect_encoding(data: bytes) -> str:
+    if chardet is None:
+        return ""
+    info = chardet.detect(data)
+    enc = info.get("encoding") or ""
+    return enc
+
+
+def convert_to_utf8(data: bytes, enc: str) -> bytes:
+    enc_norm = (enc or "").strip()
+    if not enc_norm:
+        return data
+
+    # 대충 정규화
+    enc_norm = enc_norm.upper().replace("-", "_")
+
+    if enc_norm in ("ASCII", "UTF_8", "UTF8"):
+        # 사실상 UTF-8/ASCII면 건들지 않음
+        return data
+
+    try:
+        text = data.decode(enc, errors="strict")
+    except Exception:
+        return data
+
+    return text.encode("utf-8")
+
+
+def should_intercept_show(argv: list[str]) -> bool:
+    # argv[0] = 스크립트 이름, argv[1] = "show"라고 가정
+    args = argv[2:]
+    nonopts: list[str] = []
+    for a in args:
+        if a.startswith("-"):
+            continue
+        nonopts.append(a)
+
+    # 비옵션 인자가 딱 하나이고, 그 안에 ':'가 있을 때만 인터셉트
+    if len(nonopts) != 1:
+        return False
+    if ":" not in nonopts[0]:
+        return False
+
+    # 여기서는 "git show <rev>:<path>" 형태라고 가정
+    return True
+
+
+def run_real_git_passthrough():
+    # stdin/stdout/stderr 그대로 두고 진짜 git로 교체
+    os.execv(REAL_GIT, ["git"] + sys.argv[1:])
+
+
+def main():
+    # 인코딩 처리 대상이 아닌 경우: 바로 실제 git로 패스스루
+    if len(sys.argv) < 2 or sys.argv[1] != "show" or not should_intercept_show(sys.argv):
+        run_real_git_passthrough()
+        return
+
+    # 여기까지 왔으면: git show <rev>:<path> 형태 → 출력 캡처 후 인코딩 처리
+    proc = subprocess.run(
+        [REAL_GIT] + sys.argv[1:],
+        stdin=sys.stdin.buffer,
+        stdout=subprocess.PIPE,
+        stderr=sys.stderr,
+    )
+    rc = proc.returncode
+    data = proc.stdout
+
+    if rc != 0:
+        # git show 자체 실패 → 그대로 출력 후 동일 코드로 종료
+        sys.stdout.buffer.write(data)
+        sys.exit(rc)
+
+    # 1) 바이너리면 그대로
+    if looks_binary(data):
+        sys.stdout.buffer.write(data)
+        return
+
+    # 2) 이미 UTF-8이면 그대로
+    if is_valid_utf8(data):
+        sys.stdout.buffer.write(data)
+        return
+
+    # 3) UTF-8 아님 → 인코딩 감지 후 UTF-8 변환 시도
+    enc = detect_encoding(data)
+    if not enc:
+        # 감지 실패 → 원본
+        sys.stdout.buffer.write(data)
+        return
+
+    out = convert_to_utf8(data, enc)
+    sys.stdout.buffer.write(out)
+
+
+if __name__ == "__main__":
+    main()

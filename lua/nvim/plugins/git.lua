@@ -10,8 +10,10 @@ return {
         { "<leader>vv", "<cmd>DiffviewOpen<cr>", desc = "enter diffview" },
         { "<leader>vq", "<cmd>DiffviewClose<cr>", desc = "quit diffview" },
       })
-
-    end
+    end,
+    opts = {
+      git_cmd = { vim.fn.stdpath("config") .. "/bin/" .. "diffview-git" },
+    }
   },
 
   {
