@@ -26,14 +26,10 @@ local function get_processes(prefix, opts)
   local is_windows = vim.fn.has('win32') == 1
   local separator = is_windows and ',' or ' \\+'
   local user
-  if prefix then
-    user = vim.fn.trim(vim.fn.system({'id', '-un'}))
-  else
-    user = os.getenv("USER")
-  end
-  local command = is_windows and {'tasklist', '/nh', '/fo', 'csv'} or {'ps', 'ah', '-U', user}
+  -- local command = is_windows and {'tasklist', '/nh', '/fo', 'csv'} or {'ps', 'ah', '-U', user}
+  local command = is_windows and {'tasklist', '/nh', '/fo', 'csv'} or {'ps', 'ahx'}
 
-  local full_command
+  local full_command = nil
   if prefix then
     full_command = prefix
     table.insert(full_command, table.concat(command, " "))
@@ -96,112 +92,131 @@ local function get_processes(prefix, opts)
   return procs
 end
 
-local function pick_remote_process(config)
-  local prefix = {unpack(config.pipeTransport.pipeArgs)}
-  table.insert(prefix, 1, config.pipeTransport.pipeProgram)
-
-  local label_fn = function(proc)
-    return string.format("id=%d name=%s", proc.pid, proc.name)
-  end
+---@param config table  -- nvim-dap config (pipeTransport 포함)
+---@return integer|nil  -- 선택된 PID, 취소 시 nil
+local function pick_process_with_telescope(config)
+config = config or {}
 
   local co = coroutine.running()
-  if co then
-    return coroutine.create(function()
-      local procs = get_processes(prefix)
-      require('dap.ui').pick_one(procs, "Select remote process", label_fn, function(choice)
-        coroutine.resume(co, choice and choice.pid or nil)
-      end)
-    end)
-  else
-    local procs = get_processes(prefix)
-    local result = require('dap.ui').pick_one_sync(procs, "Select remote process", label_fn)
-    return result and result.pid or nil
-   end
-end
+  if not co then
+    error("pick_process_with_telescope must be called inside a coroutine (on_config)")
+  end
 
-local function telescope_pick_process(config)
-  return coroutine.create(function(coro)
-    ----------------------------------------------------------------
-    -- 1) prefix 결정 (config.pipeTransport 기반)
-    ----------------------------------------------------------------
-    local prefix = nil
+  ----------------------------------------------------------------
+  -- 1) prefix 결정 (config.pipeTransport 기반)
+  ----------------------------------------------------------------
+  local prefix = nil
 
-    if config.pipeTransport and config.pipeTransport.pipeProgram
-    then
-      local pt = config.pipeTransport
-      if type(pt.pipeArgs) == "table" then
-        prefix = { unpack(pt.pipeArgs) }
-      else
-        prefix = {}
-      end
-      -- 예: { "ssh", "user@vm-host", ... }
-      table.insert(prefix, 1, pt.pipeProgram)
+  if config.pipeTransport
+     and config.pipeTransport.pipeProgram
+  then
+    local pt = config.pipeTransport
+    if type(pt.pipeArgs) == "table" then
+      prefix = { unpack(pt.pipeArgs) }
+    else
+      prefix = {}
     end
+    table.insert(prefix, 1, pt.pipeProgram)
+    -- 예: { "ssh", "user@vm-host", ... }
+  end
 
-    ----------------------------------------------------------------
-    -- 2) 프로세스 목록 취득 (필터 없음)
-    ----------------------------------------------------------------
-    local ok, procs = pcall(get_processes, prefix, {})
-    if not ok then
+  ----------------------------------------------------------------
+  -- 2) 프로세스 목록 취득 (필터 없음)
+  ----------------------------------------------------------------
+  local ok, procs = pcall(get_processes, prefix, {})
+  if not ok then
+    vim.schedule(function()
       vim.notify("get_processes failed: " .. tostring(procs), vim.log.levels.ERROR)
-      coroutine.resume(coro, nil)
-      return
-    end
+    end)
+    return nil
+  end
 
-    if #procs == 0 then
+  if #procs == 0 then
+    vim.schedule(function()
       vim.notify("no processes found", vim.log.levels.WARN)
-      coroutine.resume(coro, nil)
-      return
-    end
+    end)
+    return nil
+  end
 
-    ----------------------------------------------------------------
-    -- 3) Telescope picker
-    ----------------------------------------------------------------
-    local pickers      = require("telescope.pickers")
-    local finders      = require("telescope.finders")
-    local conf         = require("telescope.config").values
-    local actions      = require("telescope.actions")
-    local action_state = require("telescope.actions.state")
+  ----------------------------------------------------------------
+  -- 3) Telescope picker 띄우고, 선택/취소 시 한 번만 resume
+  ----------------------------------------------------------------
+  local pickers      = require("telescope.pickers")
+  local finders      = require("telescope.finders")
+  local conf         = require("telescope.config").values
+  local actions      = require("telescope.actions")
+  local action_state = require("telescope.actions.state")
 
-    local entries = {}
-    for _, p in ipairs(procs) do
-      table.insert(entries, {
-        pid  = p.pid,
-        name = p.name,
-        line = string.format("id=%d    name=%s", p.pid, p.name),
-      })
-    end
+  local entries = {}
+  for _, p in ipairs(procs) do
+    table.insert(entries, {
+      pid  = p.pid,
+      name = p.name,
+      line = string.format("%6d  %s", p.pid, p.name),
+    })
+  end
 
-    local t_opts = {}
+  local t_opts = {}
 
-    pickers.new(t_opts, {
-      prompt_title = "Pick process"
-        .. (prefix and " (remote)" or " (local)"),
-      finder = finders.new_table {
-        results = entries,
-        entry_maker = function(e)
-          return {
-            value   = e,
-            display = e.line,
-            ordinal = e.line,
-          }
-        end,
-      },
-      sorter = conf.generic_sorter(t_opts),
-      attach_mappings = function(bufnr, _)
-        actions.select_default:replace(function()
-          actions.close(bufnr)
-          local selection = action_state.get_selected_entry()
-          if not selection or not selection.value then
-            coroutine.resume(coro, nil)
-            return
-          end
-          coroutine.resume(coro, selection.value.pid)
-        end)
-        return true
+  pickers.new(t_opts, {
+    prompt_title = "Pick process"
+      .. (prefix and " (remote)" or " (local)"),
+
+    finder = finders.new_table {
+      results = entries,
+      entry_maker = function(e)
+        return {
+          value   = e,
+          display = e.line,
+          ordinal = e.line,
+        }
       end,
-    }):find()
-  end)
+    },
+
+    sorter = conf.generic_sorter(t_opts),
+
+    attach_mappings = function(bufnr, map)
+      local resumed = false
+      local function safe_resume(val)
+        if resumed then
+          return
+        end
+        resumed = true
+        coroutine.resume(co, val)
+      end
+
+      -- 엔트리 선택 시: PID로 resume
+      actions.select_default:replace(function()
+        local sel = action_state.get_selected_entry()
+        local pid = nil
+        if sel and sel.value then
+          pid = sel.value.pid
+        end
+        safe_resume(pid)
+        actions.close(bufnr)
+      end)
+
+      -- 취소(창 닫기) 시: nil 로 resume
+      map("n", "q", function()
+        safe_resume(nil)
+        actions.close(bufnr)
+      end)
+      map("n", "<Esc>", function()
+        safe_resume(nil)
+        actions.close(bufnr)
+      end)
+      map("i", "<Esc>", function()
+        safe_resume(nil)
+        actions.close(bufnr)
+      end)
+
+      return true
+    end,
+  }):find()
+
+  -- 여기서 선택/취소까지 기다렸다가, safe_resume 에서 넘어온 값을 받는다.
+  local pid = coroutine.yield()
+  return pid
 end
 
 return {
@@ -348,11 +363,18 @@ return {
 
       dap.listeners.on_config["user"] = function(config)
         if type(config.processId) == "string" and config.processId:match("pickRemoteProcess") then
-          config.processId = function()
-            -- return pick_remote_process(config)
-            return telescope_pick_process(config)
+          -- 여기서 Telescope 띄우고 PID 숫자로 확정
+          local ok, pid = pcall(pick_process_with_telescope, config)
+          if not ok then
+            -- picker 내부 에러
+            vim.schedule(function()
+              vim.notify("pick_process_with_telescope failed: " .. tostring(pid), vim.log.levels.ERROR)
+            end)
+          elseif pid then
+            config.processId = tostring(pid)  -- ★ 여기서는 이미 순수 숫자
           end
         end
+
         return config
       end
 
