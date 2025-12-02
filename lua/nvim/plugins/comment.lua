@@ -22,6 +22,10 @@ return {
 
   {
     "danymat/neogen",
+    command = "Neogen",
+    dependencies = {
+      "hrsh7th/nvim-cmp",
+    },
     opts = { snippet_engine = "luasnip" }
   },
 }
