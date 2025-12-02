@@ -227,7 +227,12 @@ return {
           folder_empty_open = "",
           default = "*",
         },
-        symlink_target = { enabled = true }
+        symlink_target = { enabled = true },
+        git_status = {
+          symbols = {
+            ignored = ""
+          }
+        }
       },
       window = {
         position = "left",
