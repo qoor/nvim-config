@@ -360,6 +360,9 @@ return {
       dap.listeners.before.event_exited.dapui_config = function ()
         dapui.close()
       end
+      dap.listeners.before.disconnect.dapui_config = function ()
+        dapui.close()
+      end
 
       dap.listeners.on_config["user"] = function(config)
         if type(config.processId) == "string" and config.processId:match("pickRemoteProcess") then
