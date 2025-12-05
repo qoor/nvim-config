@@ -38,6 +38,12 @@ vim.opt.cino = "N-s,g0"
 -- delays and poor user experience.
 vim.opt.updatetime = 50
 
+vim.opt.list = true
+vim.opt.listchars = {
+  tab = "  ",
+  trail = "·"
+}
+
 if vim.env.SSH_TTY then
   vim.g.clipboard = "osc52"
 end
