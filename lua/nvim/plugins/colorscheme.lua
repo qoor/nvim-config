@@ -245,6 +245,9 @@ return {
         NeogitDiffAddCursor = {},
         NeogitDiffDeleteCursor = {},
         NeogitDiffContextCursor = { link = "CursorLine" },
+
+        -- Snacks.indent
+        SnacksIndentScope = { link = "LineNr" },
       }
     }
 

@@ -1,20 +1,5 @@
 return {
   {
-    "famiu/bufdelete.nvim",
-    dependencies = { "folke/which-key.nvim" },
-    cmd = "Bdelete",
-    init = function()
-      require("which-key").add({
-        { "<leader>b", group = "+buffer" },
-        { "<leader>bh", "<cmd>bp<cr>", { silent = true }, desc = "move to the previous buffer" },
-        { "<leader>bl", "<cmd>bn<cr>", { silent = true }, desc = "move to the next buffer" },
-        { "<leader>b`", "<cmd>b#<cr>", { silent = true }, desc = "move to the next buffer" },
-        { "<leader>bd", "<cmd>Bdelete<cr>", { silent = true }, desc = "delete buffer" },
-      })
-    end
-  },
-
-  {
     "nmac427/guess-indent.nvim",
 
     opts = {

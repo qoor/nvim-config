@@ -73,14 +73,6 @@ return {
   },
 
   {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    opts = {
-      indent = { char = "▏" }
-    }
-  },
-
-  {
     "lukas-reineke/virt-column.nvim",
     opts = {}
   },
@@ -288,6 +280,72 @@ return {
         },
       })
     end,
+  },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      ---@class snacks.indent.Config
+      ---@field enabled? boolean
+      indent = {
+        indent = {
+          char = "▏"
+        },
+        -- animate scopes. Enabled by default for Neovim >= 0.10
+        -- Works on older versions but has to trigger redraws during animation.
+        ---@class snacks.indent.animate: snacks.animate.Config
+        ---@field enabled? boolean
+        --- * out: animate outwards from the cursor
+        --- * up: animate upwards from the cursor
+        --- * down: animate downwards from the cursor
+        --- * up_down: animate up or down based on the cursor position
+        ---@field style? "out"|"up_down"|"down"|"up"
+        animate = {
+          enabled = false
+        },
+        ---@class snacks.indent.Scope.Config: snacks.scope.Config
+        scope = {
+          enabled = true, -- enable highlighting the current scope
+          priority = 200,
+          char = "▏",
+          underline = true, -- underline the start of the scope
+          only_current = false, -- only show scope in the current window
+          hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+        },
+      },
+      -- bigfile = { enabled = true },
+      -- dashboard = { enabled = true },
+      -- explorer = { enabled = true },
+      -- indent = { enabled = true },
+      -- input = { enabled = true },
+      -- picker = { enabled = true },
+      -- notifier = { enabled = true },
+      -- quickfile = { enabled = true },
+      -- scope = { enabled = true },
+      -- scroll = { enabled = true },
+      -- statuscolumn = { enabled = true },
+      -- words = { enabled = true },
+    },
+    config = function(_, opts)
+      local Snacks = require("snacks")
+
+      Snacks.setup(opts)
+
+      require("which-key").add({
+        { "<leader>b", group = "+buffer" },
+        { "<leader>bh", "<cmd>bp<cr>", { silent = true }, desc = "move to the previous buffer" },
+        { "<leader>bl", "<cmd>bn<cr>", { silent = true }, desc = "move to the next buffer" },
+        { "<leader>bd", function() Snacks.bufdelete() end, { silent = true }, desc = "delete buffer" },
+        { "<leader>bo", function() Snacks.bufdelete.other() end, { silent = true }, desc = "delete other buffers" },
+        { "<leader>ba", function() Snacks.bufdelete.all() end, { silent = true }, desc = "delete all buffers" },
+      })
+    end
   },
 
   {
