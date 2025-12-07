@@ -12,6 +12,7 @@ return {
       })
     end,
     opts = {
+      enhanced_diff_hl = true,
       git_cmd = { vim.fn.stdpath("config") .. "/bin/" .. "diffview-git" },
     }
   },

@@ -58,8 +58,7 @@ return {
 
         -- Diff
         DiffAdd = { bg = darken(colors.bright_green, 0.15) },
-        --DiffDelete = { fg = colors.bright_red },
-        DiffDelete = { fg = colors.comment },
+        DiffDelete = { bg = darken(colors.bright_red, 0.15) },
         DiffChange = { bg = darken(colors.comment, 0.15) },
         DiffText = { bg = darken(colors.comment, 0.50) },
 
