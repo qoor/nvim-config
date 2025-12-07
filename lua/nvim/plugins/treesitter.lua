@@ -30,8 +30,10 @@ return {
       callback = function(event)
         local filetype = event.match
         local lang = vim.treesitter.language.get_lang(filetype)
-        if not vim.tbl_contains(ensure_installed, lang) then
-          require('nvim-treesitter').install(lang):await(function() start_ts(lang) end)
+        if lang and not vim.tbl_contains(ensure_installed, lang) then
+          if not vim.startswith(lang, "Diffview") then
+            require('nvim-treesitter').install(lang):await(function() start_ts(lang) end)
+          end
         else
           start_ts(lang)
         end
