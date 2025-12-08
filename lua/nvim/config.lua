@@ -32,7 +32,7 @@ vim.opt.cursorline = true
 
 vim.opt.exrc = true
 
-vim.opt.cino = "N-s,g0"
+vim.opt.cino = "N-s,g0,l1"
 
 -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 -- delays and poor user experience.
