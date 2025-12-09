@@ -25,6 +25,14 @@ return {
     dependencies = {
       "L3MON4D3/LuaSnip",
     },
-    opts = { snippet_engine = "luasnip" }
+    opts = { snippet_engine = "luasnip" },
+    config = function(_, opts)
+      require("neogen").setup(opts)
+
+      require("which-key").add({
+        { "<leader>c", group = "+comment" },
+        { "<leader>cc", "<cmd>Neogen<cr>", { silent = true }, desc = "generate annotation comment" },
+      })
+    end
   },
 }
