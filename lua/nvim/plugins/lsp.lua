@@ -71,6 +71,11 @@ return {
   },
 
   {
+    "MysticalDevil/inlay-hints.nvim",
+    opts = {}
+  },
+
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       "which-key.nvim",
