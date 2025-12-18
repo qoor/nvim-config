@@ -13,6 +13,7 @@ return {
         return vim.o.columns * 0.4
       end
     end,
+
     -- on_open = function(terminal)
     --   local nvimtree = require("nvim-tree.api")
     --   local nvimtree_view = require("nvim-tree.view")
@@ -28,19 +29,20 @@ return {
     --     vim.wo[terminal.window].winbar = ""
     --   end, 0)
     -- end
-    on_open = function(terminal)
-      local name = vim.fn.bufname("neo-tree")
-      local winnr = vim.fn.bufwinnr(name)
 
-      if winnr ~= -1 then
-        local cmd = string.format("Neotree toggle action=show")
-        vim.cmd(cmd)
-        vim.cmd(cmd)
-      end
-
-      vim.defer_fn(function()
-        vim.wo[terminal.window].winbar = ""
-      end, 0)
-    end
+    -- on_open = function(terminal)
+    --   local name = vim.fn.bufname("neo-tree")
+    --   local winnr = vim.fn.bufwinnr(name)
+    --
+    --   if winnr ~= -1 then
+    --     local cmd = string.format("Neotree toggle action=show")
+    --     vim.cmd(cmd)
+    --     vim.cmd(cmd)
+    --   end
+    --
+    --   vim.defer_fn(function()
+    --     vim.wo[terminal.window].winbar = ""
+    --   end, 0)
+    -- end
   },
 }
