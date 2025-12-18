@@ -28,12 +28,20 @@ return {
     vim.api.nvim_create_autocmd('FileType', {
       pattern = '*',
       callback = function(event)
+        local treesitter = require("nvim-treesitter")
+
         local filetype = event.match
         local lang = vim.treesitter.language.get_lang(filetype)
-        if lang and not vim.tbl_contains(ensure_installed, lang) then
-          if not vim.startswith(lang, "Diffview") then
-            require('nvim-treesitter').install(lang):await(function() start_ts(lang) end)
-          end
+        if not lang then
+          return
+        end
+
+        if not vim.list_contains(require("nvim-treesitter").get_available(), lang) then
+          return
+        end
+
+        if not vim.list_contains(treesitter.get_installed(), lang) then
+          treesitter.install(lang):await(function() start_ts(lang) end)
         else
           start_ts(lang)
         end
