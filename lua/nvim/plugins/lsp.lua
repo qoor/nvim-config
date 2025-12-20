@@ -98,6 +98,8 @@ return {
         },
         cmake = {},
 
+        docker_language_server = {},
+
         gopls = {},
 
         lua_ls = {
@@ -109,6 +111,7 @@ return {
             }
           }
         },
+
         rust_analyzer = {
           settings = {
             ["rust-analyzer"] = {
