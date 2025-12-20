@@ -286,6 +286,10 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    keys = {
+      { "<leader>s", function() require("snacks").terminal() end, desc = "Toggle shell" },
+      { "<ESC>", "<C-\\><C-n>", mode = "t", noremap = true },
+    },
     ---@type snacks.Config
     opts = {
       -- your configuration comes here
@@ -318,6 +322,9 @@ return {
           only_current = false, -- only show scope in the current window
           hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
         },
+      },
+      terminal = {
+        win = { relative = "win" }
       },
       -- bigfile = { enabled = true },
       -- dashboard = { enabled = true },

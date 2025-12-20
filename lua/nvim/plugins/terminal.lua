@@ -1,18 +1,18 @@
 return {
-  "akinsho/toggleterm.nvim",
-  version = "*",
-  keys = {
-    { "<leader>s", "<cmd>ToggleTerm<CR>", desc = "Toggle shell" },
-    { "<ESC>", "<C-\\><C-n>", mode = "t", noremap = true },
-  },
-  opts = {
-    size = function(term)
-      if term.direction == "horizontal" then
-        return 15
-      elseif term.direction == "vertical" then
-        return vim.o.columns * 0.4
-      end
-    end,
+  -- "akinsho/toggleterm.nvim",
+  -- version = "*",
+  -- keys = {
+  --   { "<leader>s", "<cmd>ToggleTerm<CR>", desc = "Toggle shell" },
+  --   { "<ESC>", "<C-\\><C-n>", mode = "t", noremap = true },
+  -- },
+  -- opts = {
+  --   size = function(term)
+  --     if term.direction == "horizontal" then
+  --       return 15
+  --     elseif term.direction == "vertical" then
+  --       return vim.o.columns * 0.4
+  --     end
+  --   end,
 
     -- on_open = function(terminal)
     --   local nvimtree = require("nvim-tree.api")
@@ -44,5 +44,5 @@ return {
     --     vim.wo[terminal.window].winbar = ""
     --   end, 0)
     -- end
-  },
+  -- },
 }
