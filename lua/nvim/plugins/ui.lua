@@ -324,7 +324,13 @@ return {
         },
       },
       terminal = {
-        win = { relative = "win" }
+        win = {
+          relative = "win",
+          keys = {
+            term_normal = false,
+            term_insert = false
+          }
+        }
       },
       -- bigfile = { enabled = true },
       -- dashboard = { enabled = true },
