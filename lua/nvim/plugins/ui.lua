@@ -447,10 +447,8 @@ return {
 
 
         formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = function(entry, vim_item)
-            return require("lspkind").cmp_format({ mode = "symbol", preset = "codicons" })(entry, vim_item)
-          end,
+          fields = { "icon", "abbr", "menu" },
+          format = require("lspkind").cmp_format({ mode = "symbol", preset = "codicons" })
         },
       })
 
