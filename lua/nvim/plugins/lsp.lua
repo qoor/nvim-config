@@ -120,7 +120,22 @@ return {
               }
             }
           }
-        }
+        },
+
+        basedpyright = {
+          settings = {
+            pyright = {
+              disableOrganizeImports = true,
+            },
+          },
+        },
+        ruff = {
+          init_options = {
+            settings = {
+              lint = { enable = true },
+            },
+          }
+        },
       }
 
       for server, opts in pairs(servers) do
