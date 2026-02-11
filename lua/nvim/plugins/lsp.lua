@@ -218,8 +218,19 @@ return {
 
             { "<leader>l=",  group = "+formatting" },
             { "<leader>l==",
-              function() require("conform").format { lsp_fallback = true, async = false, timeout_ms = 500 } end,
+              function()
+                local mode = vim.fn.mode()
+                if mode == "n" then
+                  local line = vim.api.nvim_win_get_cursor(0)[1]
+                  require("conform").format({ lsp_fallback = true, async = false, timeout_ms = 500, range = { start = { line, 0 }, ["end"] = { line, 0 } } })
+                else
+                  require("conform").format({ lsp_fallback = true, async = false, timeout_ms = 500 })
+                end
+              end,
               desc = "format", mode = { "n", "v" } },
+            { "<leader>l=a",
+              function() require("conform").format({ lsp_fallback = true, async = false, timeout_ms = 500 }) end,
+              desc = "format", mode = "n" },
           })
 
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
