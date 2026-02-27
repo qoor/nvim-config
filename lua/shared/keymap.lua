@@ -7,10 +7,23 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "J", "mzJ`z")
+vim.keymap.set("n", "=ap", "ma=ap'a")
 
 vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without copy" })
+
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+
 vim.keymap.set({ "n", "v" }, "<leader>e", "\"_d", { desc = "Delete without copy" })
+
+vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word" })
 
 vim.keymap.set("n", "<esc>", "<CMD>:nohl<CR>", { silent = true, noremap = true })
+
+vim.keymap.set("n", "Q", "<nop>")
+
+vim.keymap.set("n", "<leader><leader>", function()
+  vim.cmd("so")
+end)
