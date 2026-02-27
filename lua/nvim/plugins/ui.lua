@@ -114,6 +114,7 @@ return {
       local builtin = require('telescope.builtin')
       require("which-key").add({
         { "<leader>f", group = "+file" },
+        {"<leader>fv", vim.cmd.Ex, desc = "open netrw" },
         { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "find files" },
         { "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "live grep" },
         { "<leader>fb", "<cmd>lua require('telescope.builtin').buffer()<cr>", desc = "buffers" },
