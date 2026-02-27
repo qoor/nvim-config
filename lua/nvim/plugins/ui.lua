@@ -111,12 +111,33 @@ return {
     config = function(_, opts)
       require("telescope").setup(opts)
 
+      local builtin = require('telescope.builtin')
       require("which-key").add({
         { "<leader>f", group = "+file" },
         { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "find files" },
         { "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "live grep" },
         { "<leader>fb", "<cmd>lua require('telescope.builtin').buffer()<cr>", desc = "buffers" },
         { "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", desc = "help tags" },
+        { "<leader>fs",
+          function()
+            builtin.grep_string({ search = vim.fn.input("Grep > ") })
+          end,
+          desc = "search"
+        },
+        { "<leader>fws",
+          function()
+            local word = vim.fn.expand("<cword>")
+            builtin.grep_string({ search = word })
+          end,
+          desc = "search word"
+        },
+        { "<leader>fWs",
+          function()
+            local word = vim.fn.expand("<cWORD>")
+            builtin.grep_string({ search = word })
+          end,
+          desc = "search WORD"
+        },
       })
     end
   },
@@ -235,6 +256,7 @@ return {
         }
       },
       filesystem = {
+        hijack_netrw_behavior = "disabled",
         filtered_items = {
           visible = true,
           hide_dotfiles = false,
