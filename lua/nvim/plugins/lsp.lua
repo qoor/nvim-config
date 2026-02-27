@@ -70,10 +70,10 @@ return {
     opts = {}
   },
 
-  {
-    "MysticalDevil/inlay-hints.nvim",
-    opts = {}
-  },
+  -- {
+  --   "MysticalDevil/inlay-hints.nvim",
+  --   opts = {}
+  -- },
 
   {
     "neovim/nvim-lspconfig",
@@ -83,7 +83,7 @@ return {
       "cmp-nvim-lsp",
       "conform.nvim",
       --"Issafalcon/lsp-overloads.nvim",
-      "MysticalDevil/inlay-hints.nvim",
+      -- "MysticalDevil/inlay-hints.nvim",
       "nvim-telescope/telescope.nvim"
     },
     config = function()
