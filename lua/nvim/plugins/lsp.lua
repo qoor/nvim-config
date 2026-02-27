@@ -233,10 +233,10 @@ return {
               desc = "format", mode = "n" },
           })
 
-          local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          if client and client:supports_method("textDocument/inlayHint") then
-            require("inlay-hints").on_attach(client, ev.buf)
-          end
+          -- local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          -- if client and client:supports_method("textDocument/inlayHint") then
+          --   require("inlay-hints").on_attach(client, ev.buf)
+          -- end
         end,
       })
 
