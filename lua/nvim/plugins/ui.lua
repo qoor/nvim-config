@@ -241,104 +241,104 @@ return {
 		end,
 	},
 
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    lazy = false, -- neo-tree will lazily load itself
-    keys = {
-      { "<leader>t", "<cmd>Neotree toggle<cr>", desc = "Neo-tree" }
-    },
-    ---@module 'neo-tree'
-    ---@type neotree.Config
-    opts = {
-      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-      open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
-      default_component_configs = {
-        indent = {
-          indent_size = 1,
-          indent_marker = "│",
-          -- last_indent_marker = "└",
-          last_indent_marker = "",
-          with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-          expander_collapsed = "",
-          expander_expanded = "",
-        },
-        icon = {
-          folder_closed = "",
-          folder_open = "",
-          folder_empty = "",
-          folder_empty_open = "",
-          default = "*",
-        },
-        symlink_target = { enabled = true },
-        git_status = {
-          symbols = {
-            ignored = ""
-          }
-        }
-      },
-      window = {
-        position = "left",
-        -- width = "16%",
-        width = 35,
-        mappings = {
-          ["<cr>"] = "open_with_window_picker",
-        }
-      },
-      filesystem = {
-        hijack_netrw_behavior = "disabled",
-        filtered_items = {
-          visible = true,
-          hide_dotfiles = false,
-          show_hidden_count = false,
-          never_show = {
-            ".git",
-            ".DS_Store"
-          }
-        },
-        follow_current_file = {
-          enabled = true, -- This will find and focus the file in the active buffer every time
-          --              -- the current file is changed while the tree is open.
-        },
-        group_empty_dirs = true, -- when true, empty folders will be grouped together
-        use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
-      },
-    },
-  },
-  {
-    "antosha417/nvim-lsp-file-operations",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-neo-tree/neo-tree.nvim", -- makes sure that this loads after Neo-tree.
-    },
-    config = function()
-      require("lsp-file-operations").setup()
-    end,
-  },
-  {
-    "s1n7ax/nvim-window-picker",
-    version = "2.*",
-    config = function()
-      require("window-picker").setup({
-        filter_rules = {
-          include_current_win = false,
-          autoselect_one = true,
-          -- filter using buffer options
-          bo = {
-            -- if the file type is one of following, the window will be ignored
-            filetype = { "neo-tree", "neo-tree-popup", "notify" },
-            -- if the buffer type is one of following, the window will be ignored
-            buftype = { "terminal", "quickfix" },
-          },
-        },
-      })
-    end,
-  },
+  -- {
+  --   "nvim-neo-tree/neo-tree.nvim",
+  --   branch = "v3.x",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-tree/nvim-web-devicons",
+  --   },
+  --   lazy = false, -- neo-tree will lazily load itself
+  --   keys = {
+  --     { "<leader>t", "<cmd>Neotree toggle<cr>", desc = "Neo-tree" }
+  --   },
+  --   ---@module 'neo-tree'
+  --   ---@type neotree.Config
+  --   opts = {
+  --     close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+  --     open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
+  --     default_component_configs = {
+  --       indent = {
+  --         indent_size = 1,
+  --         indent_marker = "│",
+  --         -- last_indent_marker = "└",
+  --         last_indent_marker = "",
+  --         with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
+  --         expander_collapsed = "",
+  --         expander_expanded = "",
+  --       },
+  --       icon = {
+  --         folder_closed = "",
+  --         folder_open = "",
+  --         folder_empty = "",
+  --         folder_empty_open = "",
+  --         default = "*",
+  --       },
+  --       symlink_target = { enabled = true },
+  --       git_status = {
+  --         symbols = {
+  --           ignored = ""
+  --         }
+  --       }
+  --     },
+  --     window = {
+  --       position = "left",
+  --       -- width = "16%",
+  --       width = 35,
+  --       mappings = {
+  --         ["<cr>"] = "open_with_window_picker",
+  --       }
+  --     },
+  --     filesystem = {
+  --       hijack_netrw_behavior = "disabled",
+  --       filtered_items = {
+  --         visible = true,
+  --         hide_dotfiles = false,
+  --         show_hidden_count = false,
+  --         never_show = {
+  --           ".git",
+  --           ".DS_Store"
+  --         }
+  --       },
+  --       follow_current_file = {
+  --         enabled = true, -- This will find and focus the file in the active buffer every time
+  --         --              -- the current file is changed while the tree is open.
+  --       },
+  --       group_empty_dirs = true, -- when true, empty folders will be grouped together
+  --       use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
+  --     },
+  --   },
+  -- },
+  -- {
+  --   "antosha417/nvim-lsp-file-operations",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-neo-tree/neo-tree.nvim", -- makes sure that this loads after Neo-tree.
+  --   },
+  --   config = function()
+  --     require("lsp-file-operations").setup()
+  --   end,
+  -- },
+  -- {
+  --   "s1n7ax/nvim-window-picker",
+  --   version = "2.*",
+  --   config = function()
+  --     require("window-picker").setup({
+  --       filter_rules = {
+  --         include_current_win = false,
+  --         autoselect_one = true,
+  --         -- filter using buffer options
+  --         bo = {
+  --           -- if the file type is one of following, the window will be ignored
+  --           filetype = { "neo-tree", "neo-tree-popup", "notify" },
+  --           -- if the buffer type is one of following, the window will be ignored
+  --           buftype = { "terminal", "quickfix" },
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
 
   {
     "folke/snacks.nvim",
