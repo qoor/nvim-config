@@ -9,7 +9,7 @@ return {
 
     opts = {
       block = {
-        indent = false
+        indent = true
       }
     },
   },
