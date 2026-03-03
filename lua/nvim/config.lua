@@ -20,16 +20,12 @@ vim.opt.title = true
 vim.opt.titlestring = [[%t%m (%F)]]
 
 vim.opt.termguicolors = true
+vim.opt.guicursor = ""
 
 vim.opt.mouse = "a"
 
-vim.opt.cmdheight = 2
-
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
-
--- Don't pass messages to |ins-completion-menu|.
-vim.opt.shortmess:append("c")
 
 vim.opt.cursorline = true
 
