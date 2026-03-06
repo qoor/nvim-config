@@ -146,7 +146,7 @@ return {
 
       local diagnostic_config = {
         -- enable virtual text
-        virtual_text = { prefix = "" },
+        -- virtual_text = { prefix = "" },
         -- show signs
         signs = {
           text = {
@@ -157,8 +157,8 @@ return {
           },
         },
         update_in_insert = true,
-        underline = true,
-        severity_sort = true,
+        -- underline = true,
+        -- severity_sort = true,
         float = {
           focusable = false,
           style = "minimal",
@@ -207,6 +207,7 @@ return {
 
             { "<leader>lh",  group = "+hover" },
             { "<leader>lhd", function() vim.diagnostic.open_float() end, desc = "show diagnostic message" },
+            { "<leader>lhs", function() vim.diagnostic.open_float() end, desc = "show signature help" },
 
             { "<leader>lr",  group = "+refactor" },
             { "<leader>lrr", function() vim.lsp.buf.rename() end, desc = "rename" },
