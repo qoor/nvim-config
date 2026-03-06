@@ -189,7 +189,7 @@ return {
           vim.keymap.set('n', 'gd', builtin.lsp_definitions, opts)
           --vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
           vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
-          vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+          vim.keymap.set('n', '<C-s>', vim.lsp.buf.signature_help, opts)
           vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
 
           require("which-key").add({
