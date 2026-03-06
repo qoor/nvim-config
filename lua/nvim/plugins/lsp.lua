@@ -205,6 +205,9 @@ return {
             { "<leader>lgr", function() builtin.lsp_references() end, desc = "find references" },
             { "<leader>lgt", function() builtin.lsp_type_definitions() end, desc = "find type definitions" },
 
+            { "<leader>lh",  group = "+hover" },
+            { "<leader>lhd", function() vim.diagnostic.open_float() end, desc = "show diagnostic message" },
+
             { "<leader>lr",  group = "+refactor" },
             { "<leader>lrr", function() vim.lsp.buf.rename() end, desc = "rename" },
 
