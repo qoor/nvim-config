@@ -207,7 +207,7 @@ return {
 
             { "<leader>lh",  group = "+hover" },
             { "<leader>lhd", function() vim.diagnostic.open_float() end, desc = "show diagnostic message" },
-            { "<leader>lhs", function() vim.diagnostic.open_float() end, desc = "show signature help" },
+            { "<leader>lhs", function() vim.lsp.buf.signature_help() end, desc = "show signature help" },
 
             { "<leader>lr",  group = "+refactor" },
             { "<leader>lrr", function() vim.lsp.buf.rename() end, desc = "rename" },
@@ -219,6 +219,9 @@ return {
             { "<leader>lwq", "<cmd>LspStop<cr>", desc = "stop language server" },
             { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
             { "<leader>lws", "<cmd>LspStart<cr>", desc = "start language server" },
+
+            { "<leader>lG", group = "+peek" },
+            { "<leader>lGs", function() vim.lsp.buf.workspace_symbol() end, desc = "peek workspace symbols" },
 
             { "<leader>l=",  group = "+formatting" },
             { "<leader>l==",
