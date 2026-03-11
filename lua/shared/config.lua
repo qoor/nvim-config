@@ -1,3 +1,5 @@
+local usergroup = vim.api.nvim_create_augroup('UserDefined', {})
+
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
@@ -22,4 +24,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
       timeout = 40,
     })
   end,
+})
+
+vim.api.nvim_create_autocmd({"BufWritePre"}, {
+  group = usergroup,
+  pattern = "*",
+  command = [[%s/\s\+$//e]],
 })
