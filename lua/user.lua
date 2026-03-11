@@ -16,15 +16,15 @@
   vim.opt.rtp:prepend(lazypath)
 
 if not vim.g.vscode then
-  require("nvim.config")
   require("shared.config")
-  require("nvim.keymap")
   require("shared.keymap")
+  require("nvim.config")
+  require("nvim.keymap")
 
 else
-  require("code.config")
   require("shared.config")
   require("shared.keymap")
+  require("code.config")
 end
 
 if not vim.g.vscode then
