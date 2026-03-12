@@ -26,8 +26,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.api.nvim_create_autocmd({"BufWritePre"}, {
-  group = usergroup,
-  pattern = "*",
-  command = [[%s/\s\+$//e]],
-})
+-- vim.api.nvim_create_autocmd({"BufWritePre"}, {
+--   group = usergroup,
+--   pattern = "*",
+--   command = [[%s/\s\+$//e]],
+-- })
