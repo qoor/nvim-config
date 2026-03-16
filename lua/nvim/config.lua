@@ -14,8 +14,6 @@ vim.opt.shiftwidth = 4
 vim.opt.shiftround = true
 vim.opt.expandtab = true
 
-vim.opt.showmatch = true
-
 vim.opt.title = true
 vim.opt.titlestring = [[%t%m (%F)]]
 
