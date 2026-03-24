@@ -189,7 +189,7 @@ return {
           vim.keymap.set('n', 'gd', builtin.lsp_definitions, opts)
           --vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
           vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
-          vim.keymap.set('n', '<C-s>', vim.lsp.buf.signature_help, opts)
+          vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
           vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
 
           require("which-key").add({
@@ -202,12 +202,10 @@ return {
 
             { "<leader>lg",  group = "+goto" },
             { "<leader>lga", function() builtin.lsp_dynamic_workspace_symbols() end, desc = "find all meaningful symbols" },
-            { "<leader>lgr", function() builtin.lsp_references() end, desc = "find references" },
             { "<leader>lgt", function() builtin.lsp_type_definitions() end, desc = "find type definitions" },
 
             { "<leader>lh",  group = "+hover" },
             { "<leader>lhd", function() vim.diagnostic.open_float() end, desc = "show diagnostic message" },
-            { "<leader>lhs", function() vim.lsp.buf.signature_help() end, desc = "show signature help" },
 
             { "<leader>lr",  group = "+refactor" },
             { "<leader>lrr", function() vim.lsp.buf.rename() end, desc = "rename" },
@@ -219,9 +217,6 @@ return {
             { "<leader>lwq", "<cmd>LspStop<cr>", desc = "stop language server" },
             { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
             { "<leader>lws", "<cmd>LspStart<cr>", desc = "start language server" },
-
-            { "<leader>lG", group = "+peek" },
-            { "<leader>lGs", function() vim.lsp.buf.workspace_symbol() end, desc = "peek workspace symbols" },
 
             { "<leader>l=",  group = "+formatting" },
             { "<leader>l==",
