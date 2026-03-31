@@ -7,9 +7,9 @@ import subprocess
 REAL_GIT = "/usr/bin/git"
 
 try:
-    import chardet
+    import charset_normalizer
 except ImportError:
-    chardet = None  # chardet 없으면 변환 안 하고 원본 그대로 내보냄
+    charset_normalizer = None  # 모듈 없으면 변환 안 하고 원본 그대로 내보냄
 
 
 def looks_binary(data: bytes) -> bool:
@@ -26,11 +26,10 @@ def is_valid_utf8(data: bytes) -> bool:
 
 
 def detect_encoding(data: bytes) -> str:
-    if chardet is None:
+    if charset_normalizer is None:
         return ""
-    info = chardet.detect(data)
-    enc = info.get("encoding") or ""
-    return enc
+    match = charset_normalizer.from_bytes(data).best()
+    return match.encoding if match else ""
 
 
 def convert_to_utf8(data: bytes, enc: str) -> bytes:
