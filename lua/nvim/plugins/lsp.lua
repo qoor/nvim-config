@@ -21,49 +21,49 @@ return {
     },
   },
 
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "InsertEnter",
-    opts = {
-      bind = true,
-      hint_enable = false,
-      max_height = 64,
-      handler_opts = {
-        border = "single"   -- double, rounded, single, shadow, none, or a table of borders
-      },
-    },
-  },
+  -- {
+  --   "ray-x/lsp_signature.nvim",
+  --   event = "InsertEnter",
+  --   opts = {
+  --     bind = true,
+  --     hint_enable = false,
+  --     max_height = 64,
+  --     handler_opts = {
+  --       border = "single"   -- double, rounded, single, shadow, none, or a table of borders
+  --     },
+  --   },
+  -- },
 
-  {
-    "nvimdev/lspsaga.nvim",
-    dependencies = { "neovim/nvim-lspconfig", },
-    opts = {
-      lightbulb = { sign = false, virtual_text = true, sign_priority = 60 },
-      rename = {
-        in_select = false,
-        keys = {
-          quit = "<C-c>"
-        }
-      },
-      symbol_in_winbar = { enable = false }
-    },
-    config = function(_, opts)
-      require("lspsaga").setup(opts)
-
-      vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(ev)
-          require("which-key").add({
-            buffer = ev.buf,
-
-            { "<leader>laa", "<cmd>:Lspsaga code_action<cr>", desc = "code actions" },
-            { "<leader>lrr", "<cmd>:Lspsaga rename<cr>", desc = "rename" },
-            { "<leader>lgh", "<cmd>:Lspsaga incoming_calls<cr>", desc = "show incoming call hierarchy" },
-            { "<leader>lgo", "<cmd>:Lspsaga outgoing_calls<cr>", desc = "show outgoing call hierarchy" },
-          })
-        end
-      })
-    end
-  },
+  -- {
+  --   "nvimdev/lspsaga.nvim",
+  --   dependencies = { "neovim/nvim-lspconfig", },
+  --   opts = {
+  --     lightbulb = { sign = false, virtual_text = true, sign_priority = 60 },
+  --     rename = {
+  --       in_select = false,
+  --       keys = {
+  --         quit = "<C-c>"
+  --       }
+  --     },
+  --     symbol_in_winbar = { enable = false }
+  --   },
+  --   config = function(_, opts)
+  --     require("lspsaga").setup(opts)
+  --
+  --     vim.api.nvim_create_autocmd('LspAttach', {
+  --       callback = function(ev)
+  --         require("which-key").add({
+  --           buffer = ev.buf,
+  --
+  --           { "<leader>laa", "<cmd>:Lspsaga code_action<cr>", desc = "code actions" },
+  --           { "<leader>lrr", "<cmd>:Lspsaga rename<cr>", desc = "rename" },
+  --           { "<leader>lgh", "<cmd>:Lspsaga incoming_calls<cr>", desc = "show incoming call hierarchy" },
+  --           { "<leader>lgo", "<cmd>:Lspsaga outgoing_calls<cr>", desc = "show outgoing call hierarchy" },
+  --         })
+  --       end
+  --     })
+  --   end
+  -- },
 
   {
     "mason-org/mason.nvim",
@@ -190,7 +190,12 @@ return {
           --vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
           vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
           vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
-          vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
+          vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, opts)
+          -- vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
+          require("which-key").add({
+            buffer = ev.buf,
+
+          })
 
           require("which-key").add({
             buffer = ev.buf,
@@ -203,6 +208,8 @@ return {
             { "<leader>lg",  group = "+goto" },
             { "<leader>lga", function() builtin.lsp_dynamic_workspace_symbols() end, desc = "find all meaningful symbols" },
             { "<leader>lgt", function() builtin.lsp_type_definitions() end, desc = "find type definitions" },
+            { "<leader>lgh", function() builtin.lsp_incoming_calls() end, desc = "show incoming call hierarchy" },
+            { "<leader>lgo", function() builtin.lsp_outgoing_calls() end, desc = "show outgoing call hierarchy" },
 
             { "<leader>lh",  group = "+hover" },
             { "<leader>lhd", function() vim.diagnostic.open_float() end, desc = "show diagnostic message" },
