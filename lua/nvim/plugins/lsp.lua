@@ -192,10 +192,7 @@ return {
           vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
           vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, opts)
           -- vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
-          require("which-key").add({
-            buffer = ev.buf,
-
-          })
+          vim.keymap.set('n', 'grr', builtin.lsp_references, opts)
 
           require("which-key").add({
             buffer = ev.buf,
