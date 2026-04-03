@@ -2,14 +2,15 @@
 import os
 import sys
 import subprocess
+import charset_normalizer
 
 # 실제 git 바이너리 경로 (네 환경에 맞게 수정)
 REAL_GIT = "/usr/bin/git"
 
-try:
-    import charset_normalizer
-except ImportError:
-    charset_normalizer = None  # 모듈 없으면 변환 안 하고 원본 그대로 내보냄
+# try:
+#     import charset_normalizer
+# except ImportError:
+#     charset_normalizer = None  # 모듈 없으면 변환 안 하고 원본 그대로 내보냄
 
 
 def looks_binary(data: bytes) -> bool:
