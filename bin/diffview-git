@@ -79,7 +79,11 @@ def run_real_git_passthrough():
 
 def main():
     # 인코딩 처리 대상이 아닌 경우: 바로 실제 git로 패스스루
-    if len(sys.argv) < 2 or sys.argv[1] != "show" or not should_intercept_show(sys.argv):
+    if len(sys.argv) < 2 or sys.argv[1] != "show":
+        run_real_git_passthrough()
+        return
+
+    if not should_intercept_show(sys.argv):
         run_real_git_passthrough()
         return
 
