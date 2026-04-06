@@ -100,39 +100,113 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "folke/which-key.nvim",
-    },
-
-    opts = {
-      defaults = {
-        path_display = { "filename_first" },
+      {
+        "nvim-telescope/telescope-live-grep-args.nvim" ,
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = "^1.0.0",
       },
     },
 
-    config = function(_, opts)
-      require("telescope").setup(opts)
+    config = function()
+      local lga_actions = require("telescope-live-grep-args.actions")
+      local previewers = require("telescope.previewers")
+      local putils = require("telescope.previewers.utils")
+      local Job = require("plenary.job")
+
+      local new_maker = function(filepath, bufnr, opts)
+        opts = opts or {}
+        filepath = vim.fn.expand(filepath)
+
+        Job:new({
+          command = "uchardet",
+          args = { filepath },
+          on_exit = function(j)
+            local enc = vim.trim(j:result()[1] or "")
+
+            if enc == "" or enc == "UTF-8" or enc == "ASCII" then
+              previewers.buffer_previewer_maker(filepath, bufnr, opts)
+              return
+            end
+
+            vim.schedule(function()
+              if not vim.api.nvim_buf_is_valid(bufnr) then return end
+
+              local lines = vim.fn.readfile(filepath)
+              local converted = {}
+              for _, line in ipairs(lines) do
+                local ok = vim.iconv(line, enc, "utf-8")
+                table.insert(converted, ok or line)
+              end
+
+              vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, converted)
+
+              local ft = putils.filetype_detect(filepath)
+              if ft then
+                vim.bo[bufnr].filetype = ft
+              end
+              putils.highlighter(bufnr, ft, opts)
+              if type(opts.callback) == "function" then
+                opts.callback(bufnr)
+              end
+            end)
+          end,
+        }):start()
+      end
+
+      require("telescope").setup({
+        defaults = {
+          path_display = { "filename_first" },
+          buffer_previewer_maker = new_maker,
+        },
+
+        extensions = {
+          live_grep_args = {
+            auto_quoting = true, -- enable/disable auto-quoting
+            -- define mappings, e.g.
+            mappings = {         -- extend mappings
+              i = {
+                ["<C-k>"] = lga_actions.quote_prompt(),
+                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                -- freeze the current list and start a fuzzy search in the frozen list
+                ["<C-space>"] = lga_actions.to_fuzzy_refine,
+              },
+            },
+            -- ... also accepts theme settings, for example:
+            -- theme = "dropdown", -- use dropdown theme
+            -- theme = { }, -- use own theme spec
+            -- layout_config = { mirror=true }, -- mirror preview pane
+          }
+        }
+      })
+
+      require("telescope").load_extension("live_grep_args")
 
       local builtin = require('telescope.builtin')
       require("which-key").add({
-        { "<leader>f", group = "+file" },
-        {"<leader>fv", vim.cmd.Ex, desc = "open netrw" },
-        { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "find files" },
-        { "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "live grep" },
-        { "<leader>fb", "<cmd>lua require('telescope.builtin').buffer()<cr>", desc = "buffers" },
-        { "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", desc = "help tags" },
-        { "<leader>fs",
+        { "<leader>f",  group = "+file" },
+        { "<leader>fv", vim.cmd.Ex,                                                                     desc = "open netrw" },
+        { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>",                       desc = "find files" },
+        { "<leader>fg", function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "live grep" },
+        { "<leader>fb", "<cmd>lua require('telescope.builtin').buffer()<cr>",                           desc = "buffers" },
+        { "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>",                        desc = "help tags" },
+        {
+          "<leader>fs",
           function()
             builtin.grep_string({ search = vim.fn.input("Grep > ") })
           end,
           desc = "search"
         },
-        { "<leader>fws",
+        {
+          "<leader>fws",
           function()
             local word = vim.fn.expand("<cword>")
             builtin.grep_string({ search = word })
           end,
           desc = "search word"
         },
-        { "<leader>fWs",
+        {
+          "<leader>fWs",
           function()
             local word = vim.fn.expand("<cWORD>")
             builtin.grep_string({ search = word })
