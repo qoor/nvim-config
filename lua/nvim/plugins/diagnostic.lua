@@ -248,7 +248,7 @@ return {
       "rcarriga/nvim-dap-ui",
       "nvim-lua/plenary.nvim",
       "folke/which-key.nvim",
-      "Joakker/lua-json5",
+      -- "Joakker/lua-json5",
     },
 
     config = function ()
@@ -256,7 +256,7 @@ return {
       local dapui = require("dapui")
       local dap_ui_widgets = require("dap.ui.widgets")
 
-      require("dap.ext.vscode").json_decode = require("json5").parse
+      -- require("dap.ext.vscode").json_decode = require("json5").parse
 
       local lldb_path = "/usr/bin/lldb-vscode"
       if vim.fn.has("macunix") then

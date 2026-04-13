@@ -6,7 +6,6 @@ return {
       "nvim-treesitter/nvim-treesitter-context",
       opts = { max_lines = 5 }
     },
-    "Joakker/lua-json5",
   },
 
   lazy = false,

@@ -215,12 +215,12 @@ return {
             { "<leader>lrr", function() vim.lsp.buf.rename() end, desc = "rename" },
 
             { "<leader>lw",  group = "+workspaces" },
-            { "<leader>lwd", "<cmd>LspInfo<cr>", desc = "describe current language server" },
+            { "<leader>lwd", "<cmd>checkhealth vim.lsp<cr>", desc = "describe current language server" },
             { "<leader>lwl",
               function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc = "list workspace folders" },
-            { "<leader>lwq", "<cmd>LspStop<cr>", desc = "stop language server" },
-            { "<leader>lwr", "<cmd>LspRestart<cr>", desc = "restart language server" },
-            { "<leader>lws", "<cmd>LspStart<cr>", desc = "start language server" },
+            { "<leader>lwq", "<cmd>lsp stop<cr>", desc = "stop language server" },
+            { "<leader>lwr", "<cmd>lsp restart<cr>", desc = "restart language server" },
+            { "<leader>lws", "<cmd>lsp enable<cr>", desc = "start language server" },
 
             { "<leader>l=",  group = "+formatting" },
             { "<leader>l==",
