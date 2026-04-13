@@ -161,6 +161,16 @@ return {
         defaults = {
           path_display = { "filename_first" },
           buffer_previewer_maker = new_maker,
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--follow",  -- symlinks
+          },
         },
 
         extensions = {
