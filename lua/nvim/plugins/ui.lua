@@ -143,7 +143,10 @@ return {
 
               local ft = putils.filetype_detect(filepath)
               if ft then
-                vim.bo[bufnr].filetype = ft
+                vim.api.nvim_buf_call(bufnr, function()
+                  vim.cmd("noautocmd set filetype=" .. ft)
+                end)
+                -- vim.bo[bufnr].filetype = ft
               end
               putils.highlighter(bufnr, ft, opts)
               if type(opts.callback) == "function" then
