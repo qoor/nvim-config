@@ -34,10 +34,10 @@ if not vim.g.vscode then
       { import = "shared.plugins" }
     },
     install = { colorscheme = { "dracula" } },
-    checker = {
-      enabled = true,
-      check_pinned = true
-    },
+    -- checker = {
+    --   enabled = true,
+    --   check_pinned = true
+    -- },
     change_detection = { notify = false }
   })
 else
