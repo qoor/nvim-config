@@ -196,17 +196,18 @@ return {
       require("telescope").load_extension("live_grep_args")
 
       local builtin = require('telescope.builtin')
+      local additional_args = { "follow" }
       require("which-key").add({
         { "<leader>f",  group = "+file" },
         { "<leader>fv", vim.cmd.Ex,                                                                     desc = "open netrw" },
-        { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>",                       desc = "find files" },
+        { "<leader>ff", function() builtin.find_files({ follow = true }) end,                           desc = "find files" },
         { "<leader>fg", function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "live grep" },
         { "<leader>fb", "<cmd>lua require('telescope.builtin').buffer()<cr>",                           desc = "buffers" },
         { "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>",                        desc = "help tags" },
         {
           "<leader>fs",
           function()
-            builtin.grep_string({ search = vim.fn.input("Grep > ") })
+            builtin.grep_string({ search = vim.fn.input("Grep > "), additional_args = additional_args })
           end,
           desc = "search"
         },
@@ -214,7 +215,7 @@ return {
           "<leader>fws",
           function()
             local word = vim.fn.expand("<cword>")
-            builtin.grep_string({ search = word })
+            builtin.grep_string({ search = word, additional_args = additional_args })
           end,
           desc = "search word"
         },
@@ -222,7 +223,7 @@ return {
           "<leader>fWs",
           function()
             local word = vim.fn.expand("<cWORD>")
-            builtin.grep_string({ search = word })
+            builtin.grep_string({ search = word, additional_args = additional_args })
           end,
           desc = "search WORD"
         },
