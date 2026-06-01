@@ -469,12 +469,26 @@ return {
           hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
         },
       },
+      ---@class snacks.terminal.Config
+      ---@field win? snacks.win.Config|{}
+      ---@field shell? string|string[] The shell to use. Defaults to `vim.o.shell`
+      ---@field override? fun(cmd?: string|string[], opts?: snacks.terminal.Opts) Use this to use a different terminal implementation
       terminal = {
         win = {
           relative = "win",
           keys = {
-            term_normal = false,
-            term_insert = false
+            -- term_normal = false,
+            term_insert = false,
+
+            term_normal = {
+              "<C-c>", "<C-\\><C-n>",
+              mode = "t", expr = true, desc = "escape to normal mode",
+            },
+
+            term_wincmd = {
+              "<C-w>", "<C-\\><C-n><C-w>",
+              mode = "t", expr = true, desc = "C-w window command prefix",
+            },
           }
         }
       },
