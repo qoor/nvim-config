@@ -218,9 +218,9 @@ return {
             { "<leader>lwd", "<cmd>checkhealth vim.lsp<cr>", desc = "describe current language server" },
             { "<leader>lwl",
               function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc = "list workspace folders" },
-            { "<leader>lwq", "<cmd>lsp stop<cr>", desc = "stop language server" },
+            -- { "<leader>lwq", "<cmd>lsp stop<cr>", desc = "stop language server" },
             { "<leader>lwr", "<cmd>lsp restart<cr>", desc = "restart language server" },
-            { "<leader>lws", "<cmd>lsp enable<cr>", desc = "start language server" },
+            -- { "<leader>lws", "<cmd>lsp enable<cr>", desc = "start language server" },
 
             { "<leader>l=",  group = "+formatting" },
             { "<leader>l==",
