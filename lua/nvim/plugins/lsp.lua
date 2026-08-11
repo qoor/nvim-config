@@ -86,6 +86,9 @@ return {
       -- "MysticalDevil/inlay-hints.nvim",
       "nvim-telescope/telescope.nvim"
     },
+    init = function()
+      vim.lsp.log.set_level(vim.log.levels.WARN)
+    end,
     config = function()
       local capabilities = vim.tbl_deep_extend(
         "force", {},
